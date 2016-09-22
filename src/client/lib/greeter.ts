@@ -29,11 +29,11 @@ class SimpleGame {
 
     game: Phaser.Game;
 
-    map: any;
+    map: Phaser.Tilemap;
     layer: any;
 
-    cursors: any;
-    sprite: any;
+    cursors: Phaser.CursorKeys;
+    sprite: Phaser.Sprite;
 
 
     preload() {
@@ -67,11 +67,11 @@ class SimpleGame {
 
         this.cursors = this.game.input.keyboard.createCursorKeys();
 
-        this.game.input.onDown.addOnce(() => this.map.replace(31,46));
+        this.game.input.onDown.addOnce(() => this.map.replace(31,46,undefined,undefined,undefined,undefined));
     }
 
     update() {
-
+        /*
         this.sprite.body.velocity.x = 0;
         this.sprite.body.velocity.y = 0;
         this.sprite.body.angularVelocity = 0;
@@ -88,6 +88,29 @@ class SimpleGame {
         if (this.cursors.up.isDown)
         {
             this.sprite.body.velocity.copyFrom(this.game.physics.arcade.velocityFromAngle(this.sprite.angle, 300));
+        }
+        */
+
+        if (this.cursors.left.isDown)
+        {
+            this.sprite.angle = 180;
+            this.sprite.x -= 5;
+        }
+        else if (this.cursors.right.isDown)
+        {
+            this.sprite.angle = 0;
+            this.sprite.x += 5;
+        }
+
+        if (this.cursors.up.isDown)
+        {
+            this.sprite.angle = 270;
+            this.sprite.y -= 5;
+        }
+        else if (this.cursors.down.isDown)
+        {
+            this.sprite.angle = 90;
+            this.sprite.y += 5;
         }
 
     }

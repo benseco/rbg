@@ -47,17 +47,40 @@ var SimpleGame = (function () {
         this.game.input.onDown.addOnce(function () { return _this.map.replace(31, 46); });
     };
     SimpleGame.prototype.update = function () {
+        /*
         this.sprite.body.velocity.x = 0;
         this.sprite.body.velocity.y = 0;
         this.sprite.body.angularVelocity = 0;
-        if (this.cursors.left.isDown) {
+
+        if (this.cursors.left.isDown)
+        {
             this.sprite.body.angularVelocity = -200;
         }
-        else if (this.cursors.right.isDown) {
+        else if (this.cursors.right.isDown)
+        {
             this.sprite.body.angularVelocity = 200;
         }
-        if (this.cursors.up.isDown) {
+
+        if (this.cursors.up.isDown)
+        {
             this.sprite.body.velocity.copyFrom(this.game.physics.arcade.velocityFromAngle(this.sprite.angle, 300));
+        }
+        */
+        if (this.cursors.left.isDown) {
+            this.sprite.angle = 180;
+            this.sprite.x -= 5;
+        }
+        else if (this.cursors.right.isDown) {
+            this.sprite.angle = 0;
+            this.sprite.x += 5;
+        }
+        if (this.cursors.up.isDown) {
+            this.sprite.angle = 270;
+            this.sprite.y -= 5;
+        }
+        else if (this.cursors.down.isDown) {
+            this.sprite.angle = 90;
+            this.sprite.y += 5;
         }
     };
     SimpleGame.prototype.render = function () {
