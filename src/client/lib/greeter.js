@@ -19,6 +19,7 @@ var user = new Student("Jane", "M.", "Qser");
 
 document.body.innerHTML = greeter(user);
 */
+//develop first commit test 
 var SimpleGame = (function () {
     function SimpleGame() {
         //this.game = new Phaser.Game(800, 600, Phaser.AUTO, 'content', { preload: this.preload, create: this.create });

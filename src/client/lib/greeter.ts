@@ -20,7 +20,7 @@ var user = new Student("Jane", "M.", "Qser");
 document.body.innerHTML = greeter(user);
 */
 
-//develop first commit test
+//develop first commit test 
 
 class SimpleGame {
 
