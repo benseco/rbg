@@ -1,27 +1,3 @@
-/*
-class Student {
-    fullName: string;
-    constructor(public firstName, public middleInitial, public lastName) {
-        this.fullName = firstName + " " + middleInitial + " " + lastName;
-    }
-}
-
-interface Person {
-    firstName: string;
-    lastName: string;
-}
-
-function greeter(person : Person) {
-    return "Hello, " + person.firstName + " " + person.lastName;
-}
-
-var user = new Student("Jane", "M.", "Qser");
-
-document.body.innerHTML = greeter(user);
-*/
-
-//develop first commit test 
-
 class SimpleGame {
 
     constructor() {
@@ -69,7 +45,9 @@ class SimpleGame {
         this.car = this.game.add.sprite(100,100,'car');
         this.car.anchor.setTo(0.5, 0.5);
         this.game.physics.enable(this.car);
-        (this.car.body as Phaser.Physics.Arcade.Body).collideWorldBounds = true;
+        arcb(this.car).collideWorldBounds = true;
+        //(this.car.body as Phaser.Physics.Arcade.Body).immovable = true;
+        arcb(this.car).moves = false;
 
 
         //this.sprite = this.game.add.sprite(450, 80, 'car');
@@ -93,8 +71,41 @@ class SimpleGame {
     }
 
     update() {
-        this.player.update(this.cursors);
+       this.player.update(this.cursors);
         this.game.physics.arcade.collide(this.collisionGroup);
+
+
+        //(this.sprite.body as Phaser.Physics.Arcade.Body).velocity.set(0,0);
+/*
+        if (this.cursors.left.isDown)
+        {
+            this.sprite.angle = 180;
+            (this.sprite.body as Phaser.Physics.Arcade.Body).position.add(-5,0);
+            //(this.sprite.body as Phaser.Physics.Arcade.Body).velocity.set(-100,0);
+        }
+        else if (this.cursors.right.isDown)
+        {
+            this.sprite.angle = 0;
+            (this.sprite.body as Phaser.Physics.Arcade.Body).position.add(5,0);
+            //(this.sprite.body as Phaser.Physics.Arcade.Body).velocity.set(100,0);
+        }
+
+        if (this.cursors.up.isDown)
+        {
+            this.sprite.angle = 270;
+            (this.sprite.body as Phaser.Physics.Arcade.Body).position.add(0,-5);
+            //(this.sprite.body as Phaser.Physics.Arcade.Body).velocity.set(0,-100);
+        }
+        else if (this.cursors.down.isDown)
+        {
+            this.sprite.angle = 90;
+            (this.sprite.body as Phaser.Physics.Arcade.Body).position.add(0,5);
+            //(this.sprite.body as Phaser.Physics.Arcade.Body).velocity.set(0,100);
+        }
+
+        this.game.physics.arcade.collide(this.sprite,this.car);
+*/
+
     }
 
     render() {
@@ -103,6 +114,16 @@ class SimpleGame {
         this.game.debug.text('Tile X: ' + this.layer.getTileX(this.sprite.x), 32, 48, 'rgb(0,0,0)');
         this.game.debug.text('Tile Y: ' + this.layer.getTileY(this.sprite.y), 32, 64, 'rgb(0,0,0)');
         */
+
+       // this.game.debug.bodyInfo(this.sprite, 32, 32);
+        //this.game.debug.body(this.sprite);
+
+        this.game.debug.bodyInfo(this.player.playerSprite, 32, 32);
+        this.game.debug.body(this.player.playerSprite);
+        
+        this.game.debug.bodyInfo(this.car, 32, 300);
+        this.game.debug.body(this.car);
+
 
     }
 
