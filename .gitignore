@@ -1,5 +1,6 @@
 #compiled js
 server/*.js
+client/*.js
 
 #to keep
 !server/node_modules/*.js
