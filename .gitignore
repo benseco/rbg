@@ -1,0 +1,5 @@
+#compiled js
+server/*.js
+
+#to keep
+!server/node_modules/*.js
