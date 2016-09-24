@@ -1,15 +1,18 @@
 {
     "compilerOptions": {
         "target": "ES5",
-        "module": "commonjs",
+        //"module": "commonjs",
         "noEmitOnError": true,
         "noImplicitAny": true,
         "experimentalDecorators": true,
         "sourceMap": true,
-        //"sourceRoot": "src",
-        "rootDir": "src",
-        "outDir": "src"
+        //"sourceRoot": "public/lib",
+        //"rootDir": "src",
+        "outFile": "public/lib.js"
     },
     "exclude": [
+        "public/phaser",
+        "public/res",
+        "public/view"
     ]
 }

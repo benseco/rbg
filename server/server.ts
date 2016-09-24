@@ -3,7 +3,7 @@ import * as express from 'express';
 
 var app = express();
 
-app.use(express.static('../client'));
+app.use(express.static('../client/public'));
 
 app.get('/', function (req, res) {
    //res.sendFile(__dirname + "/" + "index.html");

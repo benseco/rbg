@@ -4,8 +4,22 @@
     "version": "0.1.0",
     "command": "tsc",
     "isShellCommand": true,
-    "args": ["-w", "-p", "."],
-    "showOutput": "silent",
-    "isWatching": true,
-    "problemMatcher": "$tsc-watch"
+    "args": [],
+    "echoCommand": true,
+    "tasks": [
+        {
+            "taskName": "Compile Client",
+            "suppressTaskName": true,
+            "args": ["-w", "-p", "./client"],
+            "isWatching": true,
+            "problemMatcher": "$tsc-watch"
+        },
+        {
+            "taskName": "Compile Server",
+            "suppressTaskName": true,
+            "args": ["-p", "./server"],
+            "problemMatcher": "$tsc",
+            "isBuildCommand": true
+        }
+    ]
 }
