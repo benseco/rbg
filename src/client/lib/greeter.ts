@@ -24,7 +24,7 @@ class SimpleGame {
 
     constructor() {
         //this.game = new Phaser.Game(800, 600, Phaser.AUTO, 'content', { preload: this.preload, create: this.create });
-        this.game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: this.preload, create: this.create, update: this.update, render: this.render });
+        this.game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: this.preload, create: this.create, update: this.update, render: this.render });
     }
 
     game: Phaser.Game;
@@ -34,6 +34,8 @@ class SimpleGame {
 
     cursors: Phaser.CursorKeys;
     sprite: Phaser.Sprite;
+
+    car: Phaser.Sprite;
 
 
     preload() {
@@ -50,20 +52,29 @@ class SimpleGame {
 
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-        this.map = this.game.add.tilemap('desert');
+        //this.map = this.game.add.tilemap('desert');
 
-        this.map.addTilesetImage('Desert', 'tiles');
+        //this.map.addTilesetImage('Desert', 'tiles');
 
-        this.layer = this.map.createLayer('Ground');
+        //this.layer = this.map.createLayer('Ground');
 
-        this.layer.resizeWorld();
+        //this.layer.resizeWorld();
+
+        //Wall objects
+        this.car = this.game.add.sprite(100,100,'car');
+        this.car.anchor.setTo(0.5, 0.5);
+        this.game.physics.enable(this.car);
+        (this.car.body as Phaser.Physics.Arcade.Body).collideWorldBounds = true;
+
 
         this.sprite = this.game.add.sprite(450, 80, 'car');
         this.sprite.anchor.setTo(0.5, 0.5);
-
         this.game.physics.enable(this.sprite);
+        (this.sprite.body as Phaser.Physics.Arcade.Body).collideWorldBounds = true;
 
-        this.game.camera.follow(this.sprite);
+        //this.game.physics.enable(this.sprite);
+
+        //this.game.camera.follow(this.sprite);
 
         this.cursors = this.game.input.keyboard.createCursorKeys();
 
@@ -71,55 +82,45 @@ class SimpleGame {
     }
 
     update() {
-        /*
-        this.sprite.body.velocity.x = 0;
-        this.sprite.body.velocity.y = 0;
-        this.sprite.body.angularVelocity = 0;
 
-        if (this.cursors.left.isDown)
-        {
-            this.sprite.body.angularVelocity = -200;
-        }
-        else if (this.cursors.right.isDown)
-        {
-            this.sprite.body.angularVelocity = 200;
-        }
-
-        if (this.cursors.up.isDown)
-        {
-            this.sprite.body.velocity.copyFrom(this.game.physics.arcade.velocityFromAngle(this.sprite.angle, 300));
-        }
-        */
+        (this.sprite.body as Phaser.Physics.Arcade.Body).velocity.set(0,0);
 
         if (this.cursors.left.isDown)
         {
             this.sprite.angle = 180;
-            this.sprite.x -= 5;
+            (this.sprite.body as Phaser.Physics.Arcade.Body).position.add(-5,0);
+            //(this.sprite.body as Phaser.Physics.Arcade.Body).velocity.set(-100,0);
         }
         else if (this.cursors.right.isDown)
         {
             this.sprite.angle = 0;
-            this.sprite.x += 5;
+            (this.sprite.body as Phaser.Physics.Arcade.Body).position.add(5,0);
+            //(this.sprite.body as Phaser.Physics.Arcade.Body).velocity.set(100,0);
         }
 
         if (this.cursors.up.isDown)
         {
             this.sprite.angle = 270;
-            this.sprite.y -= 5;
+            (this.sprite.body as Phaser.Physics.Arcade.Body).position.add(0,-5);
+            //(this.sprite.body as Phaser.Physics.Arcade.Body).velocity.set(0,-100);
         }
         else if (this.cursors.down.isDown)
         {
             this.sprite.angle = 90;
-            this.sprite.y += 5;
+            (this.sprite.body as Phaser.Physics.Arcade.Body).position.add(0,5);
+            //(this.sprite.body as Phaser.Physics.Arcade.Body).velocity.set(0,100);
         }
+
+        this.game.physics.arcade.collide(this.sprite,this.car);
 
     }
 
     render() {
-
+        /*
         this.game.debug.text('Click to replace tiles', 32, 32, 'rgb(0,0,0)');
         this.game.debug.text('Tile X: ' + this.layer.getTileX(this.sprite.x), 32, 48, 'rgb(0,0,0)');
         this.game.debug.text('Tile Y: ' + this.layer.getTileY(this.sprite.y), 32, 64, 'rgb(0,0,0)');
+        */
 
     }
 
