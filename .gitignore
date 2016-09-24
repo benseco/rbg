@@ -1,6 +1,8 @@
 #compiled js
-server/*.js
-client/lib/*.js
+src/server/*.js
+src/server/*.js.map
+src/client/lib/*.js
+src/client/lib/*.js.map
 
 #to keep
-!server/node_modules/*.js
+!src/server/node_modules/*.js
