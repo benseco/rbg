@@ -4,38 +4,44 @@
 
 class Player {
     playerSprite: Phaser.Sprite;
+    cursors: Phaser.CursorKeys;
 
-    constructor(game: Phaser.Game) {
-        this.playerSprite = new Phaser.Sprite(game, 450, 80);
+    constructor(game: Phaser.Game, cursors: Phaser.CursorKeys) {
+        this.playerSprite = new Phaser.Sprite(game, 450, 80, 'car');
         this.playerSprite.anchor.setTo(0.5, 0.5);
         game.physics.enable(this.playerSprite);
-        (this.playerSprite.body as Phaser.Physics.Arcade.Body).collideWorldBounds = true;
+        arcb(this.playerSprite).collideWorldBounds = true;
+
+        this.cursors = cursors;
+
+        
+        SimpleGame.subscribers.push(this);
     }
 
-    update(cursors: Phaser.CursorKeys) {
-        if (cursors.left.isDown)
+    update() {
+        if (this.cursors.left.isDown)
         {
             this.playerSprite.angle = 180;
-            (this.playerSprite.body as Phaser.Physics.Arcade.Body).position.add(-5,0);
+            arcb(this.playerSprite).position.add(-5,0);
             //(this.sprite.body as Phaser.Physics.Arcade.Body).velocity.set(-100,0);
         }
-        else if (cursors.right.isDown)
+        else if (this.cursors.right.isDown)
         {
             this.playerSprite.angle = 0;
-            (this.playerSprite.body as Phaser.Physics.Arcade.Body).position.add(5,0);
+            arcb(this.playerSprite).position.add(5,0);
             //(this.sprite.body as Phaser.Physics.Arcade.Body).velocity.set(100,0);
         }
 
-        if (cursors.up.isDown)
+        if (this.cursors.up.isDown)
         {
             this.playerSprite.angle = 270;
-            (this.playerSprite.body as Phaser.Physics.Arcade.Body).position.add(0,-5);
+            arcb(this.playerSprite).position.add(0,-5);
             //(this.sprite.body as Phaser.Physics.Arcade.Body).velocity.set(0,-100);
         }
-        else if (cursors.down.isDown)
+        else if (this.cursors.down.isDown)
         {
             this.playerSprite.angle = 90;
-            (this.playerSprite.body as Phaser.Physics.Arcade.Body).position.add(0,5);
+            arcb(this.playerSprite).position.add(0,5);
             //(this.sprite.body as Phaser.Physics.Arcade.Body).velocity.set(0,100);
         }
     }
