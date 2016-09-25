@@ -18,6 +18,7 @@ class SimpleGame {
 
     player: Player;
 
+    resizeTimer: number;
 
     preload() {
         //this.game.load.image('ground', '../res/img/test.jpg');
@@ -28,16 +29,18 @@ class SimpleGame {
     }
 
     create() {
-        //let logo = this.game.add.sprite(0, 0, 'ground');
-        //logo.anchor.setTo(0.5, 0.5);
+        let logo = this.game.add.sprite(0, 0, 'ground');
+        logo.anchor.setTo(0.5, 0.5);
+
+
 
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-        //this.map = this.game.add.tilemap('desert');
+        this.map = this.game.add.tilemap('desert');
 
-        //this.map.addTilesetImage('Desert', 'tiles');
+        this.map.addTilesetImage('Desert', 'tiles');
 
-        //this.layer = this.map.createLayer('Ground');
+        this.layer = this.map.createLayer('Ground');
 
         //this.layer.resizeWorld();
 
@@ -71,10 +74,13 @@ class SimpleGame {
     }
 
     update() {
-       this.player.update(this.cursors);
-        this.game.physics.arcade.collide(this.collisionGroup);
+        if(this.game.width != window.innerWidth && this.game.height != window.innerHeight){
+            this.resizeTimer && clearTimeout(this.resizeTimer); //still unsure how to make the clearTimeout work
+            this.resizeTimer = setTimeout(SimpleGame.resizeGameAndLayer(this), 3000);
+        }
 
-
+        this.player.update(this.cursors);
+        this.game.physics.arcade.collide(this.collisionGroup);        
         //(this.sprite.body as Phaser.Physics.Arcade.Body).velocity.set(0,0);
 /*
         if (this.cursors.left.isDown)
@@ -107,6 +113,15 @@ class SimpleGame {
 */
 
     }
+
+    static resizeGameAndLayer(s: SimpleGame){
+        s.game.scale.setGameSize(window.innerWidth, window.innerHeight);
+        s.layer.resize(s.game.width, s.game.height);
+        console.log("The game has just been resized to: " + s.game.width + " x " + s.game.height);
+        // clearTimeout(s.resizeTimer);
+        // console.log(s.resizeTimer);
+    }
+
 
     render() {
         /*
