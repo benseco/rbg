@@ -71,42 +71,15 @@ class SimpleGame {
 
         for (let obj of SimpleGame.subscribers) if (obj.update) obj.update();
 
+        /* 
+        Ben's Note: We can't be calling this in update.
         if(this.game.width != window.innerWidth && this.game.height != window.innerHeight){
             this.resizeTimer && clearTimeout(this.resizeTimer); //still unsure how to make the clearTimeout work
             this.resizeTimer = setTimeout(SimpleGame.resizeGameAndLayer(this), 3000);
         }
+        */
 
         this.game.physics.arcade.collide(this.collisionGroup);        
-        //(this.sprite.body as Phaser.Physics.Arcade.Body).velocity.set(0,0);
-/*
-        if (this.cursors.left.isDown)
-        {
-            this.sprite.angle = 180;
-            (this.sprite.body as Phaser.Physics.Arcade.Body).position.add(-5,0);
-            //(this.sprite.body as Phaser.Physics.Arcade.Body).velocity.set(-100,0);
-        }
-        else if (this.cursors.right.isDown)
-        {
-            this.sprite.angle = 0;
-            (this.sprite.body as Phaser.Physics.Arcade.Body).position.add(5,0);
-            //(this.sprite.body as Phaser.Physics.Arcade.Body).velocity.set(100,0);
-        }
-
-        if (this.cursors.up.isDown)
-        {
-            this.sprite.angle = 270;
-            (this.sprite.body as Phaser.Physics.Arcade.Body).position.add(0,-5);
-            //(this.sprite.body as Phaser.Physics.Arcade.Body).velocity.set(0,-100);
-        }
-        else if (this.cursors.down.isDown)
-        {
-            this.sprite.angle = 90;
-            (this.sprite.body as Phaser.Physics.Arcade.Body).position.add(0,5);
-            //(this.sprite.body as Phaser.Physics.Arcade.Body).velocity.set(0,100);
-        }
-
-        this.game.physics.arcade.collide(this.sprite,this.car);
-*/
 
     }
 
