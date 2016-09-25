@@ -20,6 +20,7 @@ class SimpleGame {
 
     static subscribers: any[] = [];
 
+    resizeTimer: number;
 
     preload() {
         //this.game.load.image('ground', '../res/img/test.jpg');
@@ -70,9 +71,53 @@ class SimpleGame {
 
         for (let obj of SimpleGame.subscribers) if (obj.update) obj.update();
 
-        this.game.physics.arcade.collide(this.collisionGroup);
+        if(this.game.width != window.innerWidth && this.game.height != window.innerHeight){
+            this.resizeTimer && clearTimeout(this.resizeTimer); //still unsure how to make the clearTimeout work
+            this.resizeTimer = setTimeout(SimpleGame.resizeGameAndLayer(this), 3000);
+        }
+
+        this.game.physics.arcade.collide(this.collisionGroup);        
+        //(this.sprite.body as Phaser.Physics.Arcade.Body).velocity.set(0,0);
+/*
+        if (this.cursors.left.isDown)
+        {
+            this.sprite.angle = 180;
+            (this.sprite.body as Phaser.Physics.Arcade.Body).position.add(-5,0);
+            //(this.sprite.body as Phaser.Physics.Arcade.Body).velocity.set(-100,0);
+        }
+        else if (this.cursors.right.isDown)
+        {
+            this.sprite.angle = 0;
+            (this.sprite.body as Phaser.Physics.Arcade.Body).position.add(5,0);
+            //(this.sprite.body as Phaser.Physics.Arcade.Body).velocity.set(100,0);
+        }
+
+        if (this.cursors.up.isDown)
+        {
+            this.sprite.angle = 270;
+            (this.sprite.body as Phaser.Physics.Arcade.Body).position.add(0,-5);
+            //(this.sprite.body as Phaser.Physics.Arcade.Body).velocity.set(0,-100);
+        }
+        else if (this.cursors.down.isDown)
+        {
+            this.sprite.angle = 90;
+            (this.sprite.body as Phaser.Physics.Arcade.Body).position.add(0,5);
+            //(this.sprite.body as Phaser.Physics.Arcade.Body).velocity.set(0,100);
+        }
+
+        this.game.physics.arcade.collide(this.sprite,this.car);
+*/
 
     }
+
+    static resizeGameAndLayer(s: SimpleGame){
+        s.game.scale.setGameSize(window.innerWidth, window.innerHeight);
+        s.layer.resize(s.game.width, s.game.height);
+        console.log("The game has just been resized to: " + s.game.width + " x " + s.game.height);
+        // clearTimeout(s.resizeTimer);
+        // console.log(s.resizeTimer);
+    }
+
 
     render() {
 
