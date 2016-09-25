@@ -3,12 +3,14 @@ class SimpleGame {
     constructor() {
         //this.game = new Phaser.Game(800, 600, Phaser.AUTO, 'content', { preload: this.preload, create: this.create });
         this.game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: this.preload, create: this.create, update: this.update, render: this.render }, false, false);
+
     }
 
     game: Phaser.Game;
 
     map: Phaser.Tilemap;
     layer: any;
+    collisionLayer: any;
 
     cursors: Phaser.CursorKeys;
     //sprite: Phaser.Sprite;
@@ -24,26 +26,35 @@ class SimpleGame {
 
     preload() {
         //this.game.load.image('ground', '../res/img/test.jpg');
+        
+        this.game.stage.backgroundColor = "#336600";
 
-        this.game.load.tilemap('desert', '../res/map/desert.json', null, Phaser.Tilemap.TILED_JSON);
-        this.game.load.image('tiles', '../res/map/tmw_desert_spacing.png');
+        this.game.load.tilemap('testmap', '../res/map/testmap.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.image('tiles', '../res/map/testset.png');
         this.game.load.image('car', '../res/sprite/car90.png');
+        this.game.load.image('space', '../res/img/space.jpg');
     }
 
     create() {
 
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
+        
+        this.map = this.game.add.tilemap('testmap');
 
-        this.map = this.game.add.tilemap('desert');
+        this.map.addTilesetImage('testset', 'tiles');
 
-        this.map.addTilesetImage('Desert', 'tiles');
+        this.layer = this.map.createLayer('ground');
+        this.collisionLayer = this.map.createLayer('collision');
+        this.collisionLayer.setScale(2,2);
+        
+        this.map.setCollisionByExclusion([],true,'collision');
 
-        this.layer = this.map.createLayer('Ground');
+        (this.layer as Phaser.TilemapLayer).setScale(2,2);
 
         this.layer.resizeWorld();
 
         //Wall objects
-        this.car = this.game.add.sprite(100,100,'car');
+        this.car = this.game.add.sprite(16,16,'car');
         this.car.anchor.setTo(0.5, 0.5);
         this.game.physics.enable(this.car);
         arcb(this.car).collideWorldBounds = true;
@@ -64,6 +75,10 @@ class SimpleGame {
 
         this.game.input.onDown.addOnce(() => this.map.replace(31,46,undefined,undefined,undefined,undefined));
 
+        //Add overhead layers?
+        this.map.createLayer('overhead').setScale(2,2);
+        this.map.createLayer('overhead2').setScale(2,2);
+
         
     }
 
@@ -80,6 +95,7 @@ class SimpleGame {
         */
 
         this.game.physics.arcade.collide(this.collisionGroup);        
+        this.game.physics.arcade.collide(this.player.playerSprite,this.collisionLayer);      
 
     }
 
