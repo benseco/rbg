@@ -2,14 +2,13 @@ class SimpleGame {
 
     constructor() {
         //this.game = new Phaser.Game(800, 600, Phaser.AUTO, 'content', { preload: this.preload, create: this.create });
-        this.game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: this.preload, create: this.create, update: this.update, render: this.render }, false, false);
-
+        this.game = new Phaser.Game(1280, 720, Phaser.AUTO, 'content', { preload: this.preload, create: this.create, update: this.update, render: this.render }, false, false);
     }
 
     game: Phaser.Game;
 
     map: Phaser.Tilemap;
-    layer: any;
+    layers: Phaser.TilemapLayer[] = [];
     collisionLayer: any;
 
     cursors: Phaser.CursorKeys;
@@ -26,16 +25,25 @@ class SimpleGame {
 
     preload() {
         //this.game.load.image('ground', '../res/img/test.jpg');
-        
+        //TILED PLUGIN
+
+
         this.game.stage.backgroundColor = "#336600";
 
         this.game.load.tilemap('testmap', '../res/map/testmap.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.image('tiles', '../res/map/testset.png');
         this.game.load.image('car', '../res/sprite/car90.png');
         this.game.load.image('space', '../res/img/space.jpg');
+        this.game.load.spritesheet('testplayer', '../res/sprite/testplayer.png',16,32);
     }
 
     create() {
+        //TESTING
+        this.game.time.advancedTiming = true;
+        //this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        Phaser.Canvas.setImageRenderingCrisp(this.game.canvas);
+        //TESTING
+
 
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         
@@ -43,15 +51,13 @@ class SimpleGame {
 
         this.map.addTilesetImage('testset', 'tiles');
 
-        this.layer = this.map.createLayer('ground');
+        this.layers = [];
+        this.layers.push(this.map.createLayer('ground'));
+
         this.collisionLayer = this.map.createLayer('collision');
-        this.collisionLayer.setScale(2,2);
-        
         this.map.setCollisionByExclusion([],true,'collision');
-
-        (this.layer as Phaser.TilemapLayer).setScale(2,2);
-
-        this.layer.resizeWorld();
+        this.layers.push(this.collisionLayer);
+        
 
         //Wall objects
         this.car = this.game.add.sprite(16,16,'car');
@@ -72,14 +78,18 @@ class SimpleGame {
 
         this.game.camera.follow(this.player.playerSprite);
 
-
-        this.game.input.onDown.addOnce(() => this.map.replace(31,46,undefined,undefined,undefined,undefined));
-
         //Add overhead layers?
-        this.map.createLayer('overhead').setScale(2,2);
-        this.map.createLayer('overhead2').setScale(2,2);
+        this.layers.push(this.map.createLayer('overhead'));
+        this.layers.push(this.map.createLayer('overhead2'));
 
-        
+        //All layers
+        for (let l of this.layers)
+        {
+            l.setScale(2,2);
+            l.renderSettings.enableScrollDelta = true;
+        }
+        this.layers[0].resizeWorld();
+
     }
 
     update() {
@@ -99,6 +109,7 @@ class SimpleGame {
 
     }
 
+    /*
     static resizeGameAndLayer(s: SimpleGame){
         s.game.scale.setGameSize(window.innerWidth, window.innerHeight);
         s.layer.resize(s.game.width, s.game.height);
@@ -106,11 +117,15 @@ class SimpleGame {
         // clearTimeout(s.resizeTimer);
         // console.log(s.resizeTimer);
     }
+    */
 
 
     render() {
 
         for (let obj of SimpleGame.subscribers) if (obj.render) obj.render();
+
+        
+        this.game.debug.text(this.game.time.fps.toString(), 32, 32, 'rgb(255,255,255)');
         /*
         this.game.debug.text('Click to replace tiles', 32, 32, 'rgb(0,0,0)');
         this.game.debug.text('Tile X: ' + this.layer.getTileX(this.sprite.x), 32, 48, 'rgb(0,0,0)');
