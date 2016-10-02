@@ -3,23 +3,24 @@
  */
 
 class Player {
-    playerSprite: Phaser.Sprite;
+    sprite: Phaser.Sprite;
     cursors: Phaser.CursorKeys;
 
     constructor(game: Phaser.Game, cursors: Phaser.CursorKeys) {
-        this.playerSprite = new Phaser.Sprite(game, 450, 80, 'testplayer');
-        this.playerSprite.anchor.setTo(0.5, 0.5);
-        game.physics.enable(this.playerSprite);
-        arcb(this.playerSprite).collideWorldBounds = true;
+        this.sprite = new Phaser.Sprite(game, 450, 80, 'testplayer');
+        this.sprite.anchor.setTo(0.5, 0.5);
+        game.physics.enable(this.sprite);
+        arcb(this.sprite).collideWorldBounds = true;
+        arcb(this.sprite).setSize(16,16,0,16);
 
         this.cursors = cursors;
 
-        this.playerSprite.animations.add('leftright',[2,3],5,true);
-        this.playerSprite.animations.add('idlefront',[2,3],5,true);
-        this.playerSprite.animations.add('idlefront',[0]);
-        this.playerSprite.animations.add('idleback',[1]);
-        this.playerSprite.animations.add('forward',[4,5],5,true);
-        this.playerSprite.animations.add('backward',[6,7],5,true);
+        this.sprite.animations.add('leftright',[2,3],5,true);
+        this.sprite.animations.add('idlefront',[2,3],5,true);
+        this.sprite.animations.add('idlefront',[0]);
+        this.sprite.animations.add('idleback',[1]);
+        this.sprite.animations.add('forward',[4,5],5,true);
+        this.sprite.animations.add('backward',[6,7],5,true);
 
         
         SimpleGame.subscribers.push(this);
@@ -27,8 +28,8 @@ class Player {
 
     update() {
         
-        this.playerSprite.scale.setTo(2,2);
-        arcb(this.playerSprite).velocity.set(0,0);
+        this.sprite.scale.setTo(2,2);
+        arcb(this.sprite).velocity.set(0,0);
 
         if (this.cursors.down.isDown || this.cursors.up.isDown || this.cursors.left.isDown || this.cursors.right.isDown)
         {
@@ -36,40 +37,40 @@ class Player {
             {
                 //this.playerSprite.angle = 180;
                 //arcb(this.playerSprite).position.add(-5,0);
-                arcb(this.playerSprite).velocity.add(-100,0);
+                arcb(this.sprite).velocity.add(-100,0);
 
-                this.playerSprite.scale.setTo(-2,2);
-                this.playerSprite.animations.play('leftright');
+                this.sprite.scale.setTo(-2,2);
+                this.sprite.animations.play('leftright');
             }
             else if (this.cursors.right.isDown)
             {
                 //this.playerSprite.angle = 0;
                 //arcb(this.playerSprite).position.add(5,0);
-                arcb(this.playerSprite).velocity.add(100,0);
-                this.playerSprite.animations.play('leftright');
+                arcb(this.sprite).velocity.add(100,0);
+                this.sprite.animations.play('leftright');
             }
 
             if (this.cursors.up.isDown)
             {
                 //this.playerSprite.angle = 270;
                 //arcb(this.playerSprite).position.add(0,-5);
-                arcb(this.playerSprite).velocity.add(0,-100);
-                if (!this.cursors.right.isDown && !this.cursors.left.isDown) this.playerSprite.animations.play('backward');
+                arcb(this.sprite).velocity.add(0,-100);
+                if (!this.cursors.right.isDown && !this.cursors.left.isDown) this.sprite.animations.play('backward');
             }
             else if (this.cursors.down.isDown)
             {
                 //this.playerSprite.angle = 90;
                 //arcb(this.playerSprite).position.add(0,5);
-                arcb(this.playerSprite).velocity.add(0,100);
-                if (!this.cursors.right.isDown && !this.cursors.left.isDown) this.playerSprite.animations.play('forward');
+                arcb(this.sprite).velocity.add(0,100);
+                if (!this.cursors.right.isDown && !this.cursors.left.isDown) this.sprite.animations.play('forward');
             }
 
         }
         else
         {
-            this.playerSprite.animations.play('idlefront');
+            this.sprite.animations.play('idlefront');
         }
 
-        arcb(this.playerSprite).velocity.normalize().multiply(200,200);
+        arcb(this.sprite).velocity.normalize().multiply(200,200);
     }
 }

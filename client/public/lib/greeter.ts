@@ -74,9 +74,9 @@ class SimpleGame {
 
         this.collisionGroup = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
         this.collisionGroup.add(this.car)
-        this.collisionGroup.add(this.player.playerSprite);
+        this.collisionGroup.add(this.player.sprite);
 
-        this.game.camera.follow(this.player.playerSprite);
+        this.game.camera.follow(this.player.sprite);
 
         //Add overhead layers?
         this.layers.push(this.map.createLayer('overhead'));
@@ -105,7 +105,7 @@ class SimpleGame {
         */
 
         this.game.physics.arcade.collide(this.collisionGroup);        
-        this.game.physics.arcade.collide(this.player.playerSprite,this.collisionLayer);      
+        this.game.physics.arcade.collide(this.player.sprite,this.collisionLayer);      
 
     }
 
