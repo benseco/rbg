@@ -1,19 +1,29 @@
-/**
- * Player file
- */
-
-class Player {
+/// <reference path="./base/BaseActor.ts" />
+class Player extends BaseActor {
     sprite: Phaser.Sprite;
     cursors: Phaser.CursorKeys;
 
-    constructor(game: Phaser.Game, cursors: Phaser.CursorKeys) {
-        this.sprite = new Phaser.Sprite(game, 450, 80, 'testplayer');
+    /*
+    constructor(state: BaseState)
+    {
+        super(state);
+    }
+    */
+
+    Preload()
+    {
+        this.game.load.spritesheet('testplayer', '../res/sprite/testplayer.png',16,32);
+    }
+
+    Create()
+    {
+        this.sprite = new Phaser.Sprite(this.game, 450, 80, 'testplayer');
         this.sprite.anchor.setTo(0.5, 0.5);
-        game.physics.enable(this.sprite);
+        this.game.physics.enable(this.sprite);
         arcb(this.sprite).collideWorldBounds = true;
         arcb(this.sprite).setSize(16,16,0,16);
 
-        this.cursors = cursors;
+        this.cursors = this.game.input.keyboard.createCursorKeys();
 
         this.sprite.animations.add('leftright',[2,3],5,true);
         this.sprite.animations.add('idlefront',[2,3],5,true);
@@ -22,11 +32,10 @@ class Player {
         this.sprite.animations.add('forward',[4,5],5,true);
         this.sprite.animations.add('backward',[6,7],5,true);
 
-        
-        SimpleGame.subscribers.push(this);
     }
 
-    update() {
+    Update()
+    {
         
         this.sprite.scale.setTo(2,2);
         arcb(this.sprite).velocity.set(0,0);
@@ -72,5 +81,17 @@ class Player {
         }
 
         arcb(this.sprite).velocity.normalize().multiply(200,200);
+        
     }
+    
+    Render()
+    {
+        
+    }
+    
+    Shutdown()
+    {
+        
+    }
+
 }

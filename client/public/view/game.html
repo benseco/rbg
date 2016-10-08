@@ -6,6 +6,15 @@
     <title>TypeScript HTML App</title>
     <script src="../phaser/phaser.js"></script>
     <script src="../lib.js"></script>
+    <script>
+			(function() {
+                let game = new Phaser.Game(1280, 720, Phaser.AUTO, "content",undefined,false,false);
+
+                game.state.add("Main",new Main());
+                game.state.add("L1",new Level1());
+                game.state.start("Main");
+			})();  
+    </script>
 </head>
 <body>
     <h1>TypeScript HTML App</h1>
