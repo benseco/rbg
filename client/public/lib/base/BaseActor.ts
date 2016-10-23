@@ -1,6 +1,8 @@
 abstract class BaseActor {
 
     game: Phaser.Game;
+    mainSprite: Phaser.Sprite;
+    battleSprite: Phaser.Sprite;
 
     constructor(state: BaseState, subscribes = true)
     {
@@ -40,6 +42,11 @@ abstract class BaseActor {
     shutdown() {
         
         this.Shutdown();
+    }
+
+    setMainSprite(sprite: Phaser.Sprite, collides = true) {
+        this.mainSprite = sprite;
+        arcb(this.mainSprite).collideWorldBounds = true;
     }
 
 }
