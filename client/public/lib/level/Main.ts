@@ -17,7 +17,6 @@ class Main extends BaseState
         this.game.load.tilemap('testmap', '../res/map/testmap.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.image('tiles', '../res/map/testset.png');
         this.game.load.image('car', '../res/sprite/car90.png');
-        this.game.load.image('space', '../res/img/space.jpg');
     }
 
     Create()
@@ -42,7 +41,7 @@ class Main extends BaseState
         //this.car.anchor.setTo(0.5, 0.5);
         //this.game.physics.enable(this.car);
         //arcb(this.car).collideWorldBounds = true;
-        //(this.car.body as Phaser.Physics.Arcade.Body).immovable = true;
+        //arcb(this.car).immovable = true;
         //arcb(this.car).moves = false;
 
         //Add overhead layers?

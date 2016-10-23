@@ -2,7 +2,8 @@ abstract class BaseState extends Phaser.State
 {
     subscribers: BaseActor[] = [];
     mainCollision: Phaser.Group;
-    battleCollision: Phaser.Group;
+    friendlyFire: Phaser.Group;
+    enemyFire: Phaser.Group;
     collisionLayer: Phaser.TilemapLayer;
 
     constructor() {
@@ -29,8 +30,10 @@ abstract class BaseState extends Phaser.State
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         this.mainCollision = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
         this.mainCollision.z = 100;
-        this.battleCollision = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
-        this.battleCollision.z = 200;
+        this.friendlyFire = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
+        this.friendlyFire.z = 200;
+        this.enemyFire = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
+        this.enemyFire.z = 201;
 
         for (let s of this.subscribers) {
             s.create();
@@ -55,10 +58,11 @@ abstract class BaseState extends Phaser.State
         this.Update();
         this.game.physics.arcade.collide(this.mainCollision, this.collisionLayer)
         this.game.physics.arcade.collide(this.mainCollision);
-        this.game.physics.arcade.collide(this.battleCollision);
+        this.game.physics.arcade.collide(this.friendlyFire);
 
         this.mainCollision.sort('y',Phaser.Group.SORT_ASCENDING);
-        this.battleCollision.sort('y',Phaser.Group.SORT_ASCENDING);
+        this.friendlyFire.sort('y',Phaser.Group.SORT_ASCENDING);
+        this.enemyFire.sort('y',Phaser.Group.SORT_ASCENDING);
     }
 
     render() {
