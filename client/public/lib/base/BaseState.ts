@@ -56,7 +56,7 @@ abstract class BaseState extends Phaser.State
         G.update.dispatch();
 
         this.game.physics.arcade.collide(G.mainCollision, G.layerCollision)
-        //this.game.physics.arcade.collide(this.mainCollision);
+        this.game.physics.arcade.collide(G.mainCollision);
         //this.game.physics.arcade.collide(this.friendlyFire);
 
         // this.mainCollision.sort('y',Phaser.Group.SORT_ASCENDING);
