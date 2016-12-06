@@ -1,12 +1,16 @@
 abstract class BaseActor {
 
-    game: Phaser.Game;
     mainSprite: Phaser.Sprite;
     battleSprite: Phaser.Sprite;
 
-    constructor(state: BaseState, subscribes = true)
+    constructor(state: BaseState, priority: number = 0)
     {
-        if (subscribes) state.subscribers.push(this);
+
+        G.preload.add(this.Preload, this);
+        G.create.add(this.Create, this);
+        G.update.add(this.Update, this);
+        G.render.add(this.Render, this);
+        G.shutdown.add(this.Shutdown, this);
     }
 
     abstract Preload(): void;
@@ -14,35 +18,6 @@ abstract class BaseActor {
     abstract Update(): void;
     abstract Render(): void;
     abstract Shutdown(): void;
-
-    init(game: Phaser.Game) {
-        this.game = game;
-    }
-
-    preload() {
-
-        this.Preload();
-    }
-
-    create() {
-
-        this.Create();
-    }
-
-    update() {
-
-        this.Update();
-    }
-
-    render() {
-
-        this.Render();
-    }
-
-    shutdown() {
-        
-        this.Shutdown();
-    }
 
     setMainSprite(sprite: Phaser.Sprite, collides = true) {
         this.mainSprite = sprite;

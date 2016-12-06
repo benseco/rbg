@@ -9,6 +9,8 @@
     <script>
 			(function() {
                 let game = new Phaser.Game(1280, 720, Phaser.AUTO, "content",undefined,false,false);
+                
+                Genesis.begin(game);
 
                 game.state.add("Main",new Main());
                 game.state.add("L1",new Level1());

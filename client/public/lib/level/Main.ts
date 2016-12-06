@@ -30,9 +30,9 @@ class Main extends BaseState
         this.layers = [];
         this.layers.push(this.map.createLayer('ground'));
 
-        this.collisionLayer = this.map.createLayer('collision');
+        G.layerCollision = this.map.createLayer('collision');
         this.map.setCollisionByExclusion([],true,'collision');
-        this.layers.push(this.collisionLayer);
+        this.layers.push(G.layerCollision);
 
         
 
@@ -60,6 +60,7 @@ class Main extends BaseState
             l.renderSettings.enableScrollDelta = true;
         }
         this.layers[0].resizeWorld();
+
     }
 
     Update()

@@ -4,18 +4,18 @@ class Player extends BaseActor {
 
     Preload()
     {
-        this.game.load.spritesheet('testplayer', '../res/sprite/testplayer.png',16,32);
+        G.game.load.spritesheet('testplayer', '../res/sprite/testplayer.png',16,32);
     }
 
     Create()
     {
-        let sprite = new Phaser.Sprite(this.game, 450, 80, 'testplayer');
+        let sprite = G.game.add.sprite(450, 80, 'testplayer');
         sprite.anchor.setTo(0.5, 0.5);
-        this.game.physics.enable(sprite);
+        G.game.physics.enable(sprite);
         arcb(sprite).collideWorldBounds = true;
         arcb(sprite).setSize(16,16,0,16);
 
-        this.cursors = this.game.input.keyboard.createCursorKeys();
+        this.cursors = G.game.input.keyboard.createCursorKeys();
 
         sprite.animations.add('leftright',[2,3],5,true);
         sprite.animations.add('idlefront',[0]);
@@ -24,7 +24,12 @@ class Player extends BaseActor {
         sprite.animations.add('backward',[6,7],5,true);
 
         this.setMainSprite(sprite);
-        this.game.camera.follow(this.mainSprite);
+        G.game.camera.follow(this.mainSprite);
+
+        
+        //Temporary hack
+        G.mainCollision.add(sprite)
+
     }
 
     Update()
