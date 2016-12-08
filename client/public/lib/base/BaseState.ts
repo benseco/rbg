@@ -34,6 +34,8 @@ abstract class BaseState extends Phaser.State
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         G.mainCollision = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
         G.mainCollision.z = 100;
+        G.friendlyFireCollision = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
+        G.friendlyFireCollision.z = 200;
         // this.friendlyFire = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
         // this.friendlyFire.z = 200;
         // this.enemyFire = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
@@ -55,8 +57,9 @@ abstract class BaseState extends Phaser.State
     update() {
         G.update.dispatch();
 
-        this.game.physics.arcade.collide(G.mainCollision, G.layerCollision)
+        this.game.physics.arcade.collide(G.mainCollision, G.layerCollision);
         this.game.physics.arcade.collide(G.mainCollision);
+        this.game.physics.arcade.collide(G.friendlyFireCollision, G.layerCollision, this.onCollide);
         //this.game.physics.arcade.collide(this.friendlyFire);
 
         // this.mainCollision.sort('y',Phaser.Group.SORT_ASCENDING);
@@ -77,4 +80,9 @@ abstract class BaseState extends Phaser.State
     shutdown() {
         G.shutdown.dispatch();
     }
+
+    onCollide(sprite:Phaser.Sprite, maptile: any) {
+        arcb(sprite).onCollide.dispatch();
+    }
+
 }

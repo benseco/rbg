@@ -1,6 +1,7 @@
 /// <reference path="./base/BaseActor.ts" />
 class Player extends BaseActor {
     cursors: Phaser.CursorKeys;
+    isShooting: boolean;
 
     Preload()
     {
@@ -30,6 +31,8 @@ class Player extends BaseActor {
         //Temporary hack
         G.mainCollision.add(sprite)
 
+        this.isShooting = false;
+
     }
 
     Update()
@@ -38,9 +41,10 @@ class Player extends BaseActor {
         this.mainSprite.scale.setTo(2,2);
         arcb(this.mainSprite).velocity.set(0,0);
 
-        if (this.cursors.down.isDown || this.cursors.up.isDown || this.cursors.left.isDown || this.cursors.right.isDown)
+        if (G.game.input.keyboard.isDown(Phaser.Keyboard.S) || G.game.input.keyboard.isDown(Phaser.Keyboard.W) ||
+             G.game.input.keyboard.isDown(Phaser.Keyboard.A) || G.game.input.keyboard.isDown(Phaser.Keyboard.D))
         {
-            if (this.cursors.left.isDown)
+            if (G.game.input.keyboard.isDown(Phaser.Keyboard.A))
             {
                 //this.playerSprite.angle = 180;
                 //arcb(this.playerSprite).position.add(-5,0);
@@ -49,7 +53,7 @@ class Player extends BaseActor {
                 this.mainSprite.scale.setTo(-2,2);
                 this.mainSprite.animations.play('leftright');
             }
-            else if (this.cursors.right.isDown)
+            else if (G.game.input.keyboard.isDown(Phaser.Keyboard.D))
             {
                 //this.playerSprite.angle = 0;
                 //arcb(this.playerSprite).position.add(5,0);
@@ -57,25 +61,38 @@ class Player extends BaseActor {
                 this.mainSprite.animations.play('leftright');
             }
 
-            if (this.cursors.up.isDown)
+            if (G.game.input.keyboard.isDown(Phaser.Keyboard.W))
             {
                 //this.playerSprite.angle = 270;
                 //arcb(this.playerSprite).position.add(0,-5);
                 arcb(this.mainSprite).velocity.add(0,-100);
-                if (!this.cursors.right.isDown && !this.cursors.left.isDown) this.mainSprite.animations.play('backward');
+                if (!G.game.input.keyboard.isDown(Phaser.Keyboard.D) && !G.game.input.keyboard.isDown(Phaser.Keyboard.A)) this.mainSprite.animations.play('backward');
             }
-            else if (this.cursors.down.isDown)
+            else if (G.game.input.keyboard.isDown(Phaser.Keyboard.S))
             {
                 //this.playerSprite.angle = 90;
                 //arcb(this.playerSprite).position.add(0,5);
                 arcb(this.mainSprite).velocity.add(0,100);
-                if (!this.cursors.right.isDown && !this.cursors.left.isDown) this.mainSprite.animations.play('forward');
+                if (!G.game.input.keyboard.isDown(Phaser.Keyboard.D) && !G.game.input.keyboard.isDown(Phaser.Keyboard.A)) this.mainSprite.animations.play('forward');
             }
 
         }
         else
         {
             this.mainSprite.animations.play('idlefront');
+        }
+
+        if(G.game.input.activePointer.leftButton.isDown)
+        {
+            if(!this.isShooting)
+            {
+                let b = new Bullet(this.mainSprite.x, this.mainSprite.y);
+                this.isShooting = true;
+            }
+        }
+        else
+        {
+            this.isShooting = false;
         }
 
         arcb(this.mainSprite).velocity.normalize().multiply(200,200);

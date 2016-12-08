@@ -36,7 +36,7 @@ class BasicEnemy extends BaseActor {
         this.mainSprite.scale.setTo(2,2);
         arcb(this.mainSprite).velocity.set(0,0);
 
-        G.game.physics.arcade.moveToObject(this.mainSprite, this.player.mainSprite, 100)
+        G.game.physics.arcade.moveToObject(this.mainSprite, this.player.mainSprite, 50)
 
         if (Math.random() > 0.8)
         {

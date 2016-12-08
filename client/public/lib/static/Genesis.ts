@@ -26,6 +26,7 @@ class Genesis
     // TEMPORARY
     static mainCollision: Phaser.Group;
     static layerCollision: Phaser.TilemapLayer;
+    static friendlyFireCollision: Phaser.Group;
 
 
 }
