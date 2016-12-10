@@ -24,4 +24,15 @@ abstract class BaseActor {
         arcb(this.mainSprite).collideWorldBounds = true;
     }
 
+    destroy()
+    {
+        G.preload.remove(this.Preload, this);
+        G.create.remove(this.Create, this);
+        G.update.remove(this.Update, this);
+        G.render.remove(this.Render, this);
+        G.shutdown.remove(this.Shutdown, this);
+        this.mainSprite = undefined;
+        this.battleSprite = undefined;
+    }
+
 }

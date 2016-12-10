@@ -24,7 +24,7 @@ class Bullet extends BaseActor {
 
     Create()
     {
-        let sprite = G.game.add.sprite(this.x, this.y, 'basicenemy');
+        let sprite = G.getSprite('basicenemy', this.x, this.y);
         sprite.anchor.setTo(0.5, 0.5);
         G.game.physics.enable(sprite);
         arcb(sprite).collideWorldBounds = true;
@@ -49,13 +49,14 @@ class Bullet extends BaseActor {
         
         //blocked: potential bug with collideSpriteVsTilemapLayer()
         this.mainSprite.body.onCollide = new Phaser.Signal();
-        this.mainSprite.body.onCollide.add(this.Destroy, this);
+        this.mainSprite.body.onCollide.add(this.onCollide, this);
 
     }
 
-    Destroy()
+    onCollide()
     {
-        this.mainSprite.kill();
+        G.killSprite(this.mainSprite);
+        this.destroy();
     }
 
     Update()

@@ -10,7 +10,7 @@ class BasicEnemy extends BaseActor {
 
     Create()
     {
-        let sprite = G.game.add.sprite(200, 80, 'basicenemy');
+        let sprite = G.getSprite('basicenemy', 200, 80);
         sprite.anchor.setTo(0.5, 0.5);
         G.game.physics.enable(sprite);
         arcb(sprite).collideWorldBounds = true;

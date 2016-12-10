@@ -10,7 +10,7 @@ class Player extends BaseActor {
 
     Create()
     {
-        let sprite = G.game.add.sprite(450, 80, 'testplayer');
+        let sprite = G.getSprite('testplayer', 450, 80);
         sprite.anchor.setTo(0.5, 0.5);
         G.game.physics.enable(sprite);
         arcb(sprite).collideWorldBounds = true;
@@ -86,7 +86,7 @@ class Player extends BaseActor {
         {
             if(!this.isShooting)
             {
-                let b = new Bullet(this.mainSprite.x, this.mainSprite.y);
+                new Bullet(this.mainSprite.x, this.mainSprite.y);
                 this.isShooting = true;
             }
         }
