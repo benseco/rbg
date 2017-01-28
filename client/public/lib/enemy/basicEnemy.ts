@@ -23,7 +23,6 @@ class BasicEnemy extends BaseActor {
         sprite.animations.add('backward',[6,7],5,true);
 
         this.setMainSprite(sprite);
-        // G.game.camera.follow(this.mainSprite);
 
         
         //Temporary hack

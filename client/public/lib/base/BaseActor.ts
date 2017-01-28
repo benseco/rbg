@@ -3,7 +3,7 @@ abstract class BaseActor {
     mainSprite: Phaser.Sprite;
     battleSprite: Phaser.Sprite;
 
-    constructor(state: BaseState, priority: number = 0)
+    constructor()
     {
 
         G.preload.add(this.Preload, this);

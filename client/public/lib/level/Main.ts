@@ -9,9 +9,9 @@ class Main extends BaseState
     constructor()
     {
         super();
-        this.player = new Player(this);
-        let basicEnemy = new BasicEnemy(this);
-        basicEnemy.player = this.player;
+        this.player = new Player();
+        //let basicEnemy = new BasicEnemy();
+        //basicEnemy.player = this.player;
     }
     
     Preload()
@@ -26,6 +26,29 @@ class Main extends BaseState
 
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         
+        //this.useTestMap();
+
+        
+
+    }
+
+    Update()
+    { 
+
+    }
+    
+    Render()
+    {
+        
+    }
+    
+    Shutdown()
+    {
+        
+    }
+
+    useTestMap()
+    {
         this.map = this.game.add.tilemap('testmap');
         this.map.addTilesetImage('testset', 'tiles');
 
@@ -62,24 +85,7 @@ class Main extends BaseState
             l.renderSettings.enableScrollDelta = true;
         }
         this.layers[0].resizeWorld();
-
     }
-
-    Update()
-    { 
-
-    }
-    
-    Render()
-    {
-        
-    }
-    
-    Shutdown()
-    {
-        
-    }
-
 
     
 }

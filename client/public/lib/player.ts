@@ -3,6 +3,14 @@ class Player extends BaseActor {
     cursors: Phaser.CursorKeys;
     isShooting: boolean;
 
+    weaponSystem: MainWeapon;
+
+    constructor()
+    {
+        super();
+        this.weaponSystem = new MainWeapon();
+    }
+
     Preload()
     {
         G.game.load.spritesheet('testplayer', '../res/sprite/testplayer.png',16,32);
@@ -37,7 +45,24 @@ class Player extends BaseActor {
 
     Update()
     {
+        this.tryMove();
+
+        this.tryShoot();
         
+    }
+    
+    Render()
+    {
+        
+    }
+    
+    Shutdown()
+    {
+        
+    }
+
+    tryMove()
+    {
         this.mainSprite.scale.setTo(2,2);
         arcb(this.mainSprite).velocity.set(0,0);
 
@@ -82,6 +107,11 @@ class Player extends BaseActor {
             this.mainSprite.animations.play('idlefront');
         }
 
+        arcb(this.mainSprite).velocity.normalize().multiply(200,200);
+    }
+
+    tryShoot()
+    {
         if(G.game.input.activePointer.leftButton.isDown)
         {
             if(!this.isShooting)
@@ -94,19 +124,6 @@ class Player extends BaseActor {
         {
             this.isShooting = false;
         }
-
-        arcb(this.mainSprite).velocity.normalize().multiply(200,200);
-        
-    }
-    
-    Render()
-    {
-        
-    }
-    
-    Shutdown()
-    {
-        
     }
 
 }

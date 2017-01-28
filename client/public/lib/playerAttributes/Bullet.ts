@@ -9,7 +9,7 @@ class Bullet extends BaseActor {
     y1: number;
 
     constructor(x: number, y: number) {
-        super(null);
+        super();
         this.x = x;
         this.y = y;
         this.Preload();
@@ -24,7 +24,7 @@ class Bullet extends BaseActor {
 
     Create()
     {
-        let sprite = G.getSprite('basicenemy', this.x, this.y);
+        let sprite = G.getSprite('testplayer', this.x, this.y);
         sprite.anchor.setTo(0.5, 0.5);
         G.game.physics.enable(sprite);
         arcb(sprite).collideWorldBounds = true;
