@@ -120,7 +120,7 @@ class Player extends BaseActor {
                 this.isShooting = true;
             }
         }
-        else
+        else if (this.isShooting)
         {
             this.isShooting = false;
         }
