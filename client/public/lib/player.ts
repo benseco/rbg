@@ -37,7 +37,7 @@ class Player extends BaseActor {
 
         
         //Temporary hack
-        G.mainCollision.add(sprite)
+        G.physicCollision.add(sprite)
 
         this.isShooting = false;
 

@@ -1,8 +1,5 @@
 abstract class BaseState extends Phaser.State
 {
-    mainCollision: Phaser.Group;
-    friendlyFire: Phaser.Group;
-    enemyFire: Phaser.Group;
     collisionLayer: Phaser.TilemapLayer;
 
     constructor() {
@@ -32,14 +29,17 @@ abstract class BaseState extends Phaser.State
 
     create() {
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
-        G.mainCollision = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
-        G.mainCollision.z = 100;
-        G.friendlyFireCollision = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
-        G.friendlyFireCollision.z = 200;
-        // this.friendlyFire = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
-        // this.friendlyFire.z = 200;
-        // this.enemyFire = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
-        // this.enemyFire.z = 201;
+
+        G.physicCollision = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
+        G.enemyHitboxes = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
+        G.enemyFire = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
+        G.allyHitboxes = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
+        G.allyFire = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
+        G.enemyHitboxes.z = 0; 
+        G.allyHitboxes.z = 1; 
+        G.physicCollision.z = 2; 
+        G.allyFire.z = 3; 
+        G.enemyFire.z = 4;
 
         //ADD UNNIVERSAL CODE HERE
         this.game.stage.backgroundColor = "#336600";
@@ -57,15 +57,11 @@ abstract class BaseState extends Phaser.State
     update() {
         G.update.dispatch();
 
-        this.game.physics.arcade.collide(G.mainCollision, G.layerCollision);
-        this.game.physics.arcade.collide(G.mainCollision);
-        this.game.physics.arcade.collide(G.friendlyFireCollision, G.layerCollision, this.onCollide);
-        //this.game.physics.arcade.collide(this.friendlyFire);
-
-        // this.mainCollision.sort('y',Phaser.Group.SORT_ASCENDING);
-        // this.friendlyFire.sort('y',Phaser.Group.SORT_ASCENDING);
-        // this.enemyFire.sort('y',Phaser.Group.SORT_ASCENDING);
+        this.game.physics.arcade.collide(G.physicCollision);
+        this.game.physics.arcade.collide(G.enemyHitboxes, G.allyFire);
+        this.game.physics.arcade.collide(G.allyHitboxes, G.enemyFire);
         
+        G.physicCollision.sort('y',Phaser.Group.SORT_ASCENDING);
     }
 
     render() {

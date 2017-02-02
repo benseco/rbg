@@ -44,7 +44,7 @@ class Bullet extends BaseActor {
 
 
         //Temporary hack
-        G.friendlyFireCollision.add(sprite);
+        G.allyFire.add(sprite);
         // G.mainCollision.add(sprite);
         
         //blocked: potential bug with collideSpriteVsTilemapLayer()

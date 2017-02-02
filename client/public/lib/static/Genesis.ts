@@ -11,6 +11,8 @@ class Genesis
     static render: Phaser.Signal;
     static shutdown: Phaser.Signal;
 
+    static player: Player;
+
     static begin(game: Phaser.Game) 
     {
         Genesis.game = game;
@@ -22,6 +24,8 @@ class Genesis
         Genesis.shutdown = new Phaser.Signal();
 
         Genesis.recyclables = {};
+        
+        this.player = new Player();
 
     }
 
@@ -57,10 +61,14 @@ class Genesis
         }
     }
 
-    // TEMPORARY
-    static mainCollision: Phaser.Group;
+    static physicCollision: Phaser.Group;
+    static enemyHitboxes: Phaser.Group;
+    static enemyFire: Phaser.Group;
+    static allyHitboxes: Phaser.Group;
+    static allyFire: Phaser.Group;
+
+    //TEMPORARY
     static layerCollision: Phaser.TilemapLayer;
-    static friendlyFireCollision: Phaser.Group;
 
 
 }

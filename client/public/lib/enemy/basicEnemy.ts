@@ -1,8 +1,6 @@
 /// <reference path="../base/BaseActor.ts" />
 class BasicEnemy extends BaseActor {
     
-    player: Player;
-
     Preload()
     {
         G.game.load.spritesheet('basicenemy', '../res/sprite/testplayer.png',16,25);
@@ -26,7 +24,7 @@ class BasicEnemy extends BaseActor {
 
         
         //Temporary hack
-        G.mainCollision.add(sprite)
+        G.physicCollision.add(sprite)
         
     }
 
@@ -35,7 +33,7 @@ class BasicEnemy extends BaseActor {
         this.mainSprite.scale.setTo(2,2);
         arcb(this.mainSprite).velocity.set(0,0);
 
-        G.game.physics.arcade.moveToObject(this.mainSprite, this.player.mainSprite, 50)
+        G.game.physics.arcade.moveToObject(this.mainSprite, G.player.mainSprite, 50)
 
         if (Math.random() > 0.8)
         {
