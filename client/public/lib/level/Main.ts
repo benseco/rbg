@@ -9,9 +9,7 @@ class Main extends BaseState
     constructor()
     {
         super();
-        //this.player = new Player();
         let basicEnemy = new BasicEnemy();
-        //basicEnemy.player = this.player;
     }
     
     Preload()

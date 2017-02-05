@@ -35,4 +35,14 @@ abstract class BaseActor {
         this.battleSprite = undefined;
     }
 
+    /**
+     * Method comment
+     * @param forceVector forceVector parameter
+     */
+    applyForce(forceVector: Phaser.Point)
+    {
+        arcb(this.mainSprite).acceleration.x += forceVector.x / arcb(this.mainSprite).mass;
+        arcb(this.mainSprite).acceleration.y += forceVector.y / arcb(this.mainSprite).mass;
+    }
+
 }
