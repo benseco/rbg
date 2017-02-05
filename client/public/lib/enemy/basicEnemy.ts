@@ -13,7 +13,8 @@ class BasicEnemy extends BaseActor {
         G.game.physics.enable(sprite);
         arcb(sprite).collideWorldBounds = true;
         arcb(sprite).setSize(16,16,0,16);
-        arcb(sprite).mass = 5;
+        arcb(sprite).mass = 15;
+        arcb(sprite).drag = new Phaser.Point(200,200);
 
         sprite.animations.add('leftright',[2,3],5,true);
         sprite.animations.add('idlefront',[0]);
@@ -24,6 +25,7 @@ class BasicEnemy extends BaseActor {
         this.setMainSprite(sprite);
 
         
+        //this.mainSprite.scale.setTo(2,2);
         //Temporary hack
         G.physicCollision.add(sprite)
         
@@ -78,7 +80,6 @@ class BasicEnemy extends BaseActor {
         */
 
         // arcb(this.mainSprite).velocity.normalize().multiply(200,200);
-        
     }
     
     Render()
