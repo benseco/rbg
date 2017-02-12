@@ -3,18 +3,22 @@ class BasicEnemy extends BaseActor {
     
     Preload()
     {
-        G.game.load.spritesheet('basicenemy', '../res/sprite/testplayer.png',16,25);
+        G.game.load.spritesheet('basicenemy', '../res/sprite/testplayer.png',16,32);
     }
 
     Create()
     {
         let sprite = G.getSprite('basicenemy', 300, 80);
-        sprite.anchor.setTo(0.5, 0.5);
-        G.game.physics.enable(sprite);
-        arcb(sprite).collideWorldBounds = true;
-        arcb(sprite).setSize(16,16,0,16);
-        arcb(sprite).mass = 15;
-        arcb(sprite).drag = new Phaser.Point(200,200);
+        G.game.physics.p2.enable(sprite, true);
+        p2b(sprite).collideWorldBounds = true;
+        p2b(sprite).setRectangle(16,16);
+        p2b(sprite).mass = 15;
+        p2b(sprite).static = true;
+        p2b(sprite).offset = new Phaser.Point(0,-16);
+        //p2b(sprite).updateCollisionMask();
+
+        p2b(sprite).setCollisionGroup(G.physicCollision);
+        p2b(sprite).collides(G.physicCollision);
 
         sprite.animations.add('leftright',[2,3],5,true);
         sprite.animations.add('idlefront',[0]);
@@ -25,15 +29,13 @@ class BasicEnemy extends BaseActor {
         this.setMainSprite(sprite);
 
         
-        //this.mainSprite.scale.setTo(2,2);
-        //Temporary hack
-        G.physicCollision.add(sprite)
+        this.mainSprite.scale.setTo(2,2);
         
     }
 
     Update()
     {
-        this.mainSprite.scale.setTo(2,2);
+        //this.mainSprite.scale.setTo(2,2);
         //arcb(this.mainSprite).velocity.set(0,0);
 
         //G.game.physics.arcade.moveToObject(this.mainSprite, G.player.mainSprite, 50)

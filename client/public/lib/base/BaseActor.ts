@@ -21,7 +21,7 @@ abstract class BaseActor {
 
     setMainSprite(sprite: Phaser.Sprite, collides = true) {
         this.mainSprite = sprite;
-        arcb(this.mainSprite).collideWorldBounds = true;
+        p2b(this.mainSprite).collideWorldBounds = true;
     }
 
     destroy()
@@ -35,14 +35,13 @@ abstract class BaseActor {
         this.battleSprite = undefined;
     }
 
-    /**
-     * Method comment
-     * @param forceVector forceVector parameter
-     */
-    applyForce(forceVector: Phaser.Point)
+    /*
+    drag()
     {
-        arcb(this.mainSprite).acceleration.x += forceVector.x / arcb(this.mainSprite).mass;
-        arcb(this.mainSprite).acceleration.y += forceVector.y / arcb(this.mainSprite).mass;
+        let drag = (new Phaser.Point()).copyFrom(arcb(this.mainSprite).velocity).multiply(10,10);
+        arcb(this.mainSprite).velocity.x -= drag.x * G.game.time.physicsElapsed;
+        arcb(this.mainSprite).velocity.y -= drag.y * G.game.time.physicsElapsed;
     }
+    */
 
 }

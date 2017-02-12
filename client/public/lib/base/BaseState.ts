@@ -28,21 +28,24 @@ abstract class BaseState extends Phaser.State
     }
 
     create() {
-        this.game.physics.startSystem(Phaser.Physics.ARCADE);
+        this.game.physics.startSystem(Phaser.Physics.P2JS);
+        //this.game.physics.p2.setImpactEvents(true);
 
-        G.physicCollision = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
-        G.enemyHitboxes = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
-        G.enemyFire = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
-        G.allyHitboxes = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
-        G.allyFire = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
-        G.enemyHitboxes.z = 0; 
-        G.allyHitboxes.z = 1; 
-        G.physicCollision.z = 2; 
-        G.allyFire.z = 3; 
-        G.enemyFire.z = 4;
+        G.physicCollision = this.game.physics.p2.createCollisionGroup();
+        G.enemyHitboxes = this.game.physics.p2.createCollisionGroup();
+        G.enemyFire = this.game.physics.p2.createCollisionGroup();
+        G.allyHitboxes = this.game.physics.p2.createCollisionGroup();
+        G.allyFire = this.game.physics.p2.createCollisionGroup();
+
+        this.game.physics.p2.updateBoundsCollisionGroup();
+        // G.enemyHitboxes.z = 0; 
+        // G.allyHitboxes.z = 1; 
+        // G.physicCollision.z = 2; 
+        // G.allyFire.z = 3; 
+        // G.enemyFire.z = 4;
 
         //ADD UNNIVERSAL CODE HERE
-        this.game.stage.backgroundColor = "#336600";
+        this.game.stage.backgroundColor = "#dddddd";
 
         this.game.time.advancedTiming = true;
         //this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
@@ -57,11 +60,11 @@ abstract class BaseState extends Phaser.State
     update() {
         G.update.dispatch();
 
-        this.game.physics.arcade.collide(G.physicCollision);
-        this.game.physics.arcade.collide(G.enemyHitboxes, G.allyFire);
-        this.game.physics.arcade.collide(G.allyHitboxes, G.enemyFire);
+        //this.game.physics.arcade.collide(G.physicCollision);
+        //this.game.physics.arcade.collide(G.enemyHitboxes, G.allyFire);
+        //this.game.physics.arcade.collide(G.allyHitboxes, G.enemyFire);
         
-        G.physicCollision.sort('y',Phaser.Group.SORT_ASCENDING);
+        // G.physicCollision.sort('y',Phaser.Group.SORT_ASCENDING);
     }
 
     render() {
@@ -75,10 +78,6 @@ abstract class BaseState extends Phaser.State
 
     shutdown() {
         G.shutdown.dispatch();
-    }
-
-    onCollide(sprite:Phaser.Sprite, maptile: any) {
-        arcb(sprite).onCollide.dispatch();
     }
 
 }

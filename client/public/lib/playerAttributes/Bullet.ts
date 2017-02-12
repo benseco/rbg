@@ -24,11 +24,12 @@ class Bullet extends BaseActor {
 
     Create()
     {
-        let sprite = G.getSprite('testplayer', this.x, this.y);
-        sprite.anchor.setTo(0.5, 0.5);
-        G.game.physics.enable(sprite);
-        arcb(sprite).collideWorldBounds = true;
-        arcb(sprite).setSize(2,2,0,2);
+        let sprite = G.getSprite('bullet', this.x, this.y);
+        //sprite.anchor.setTo(0.5, 0.5);
+        G.game.physics.p2.enable(sprite, true);
+        p2b(sprite).collideWorldBounds = true;
+        p2b(sprite).setRectangle(4,4,0,0);
+        p2b(sprite).fixedRotation = true;
 
         // sprite.animations.add('leftright',[2,3],5,true);
         // sprite.animations.add('idlefront',[0]);
@@ -44,7 +45,7 @@ class Bullet extends BaseActor {
 
 
         //Temporary hack
-        G.allyFire.add(sprite);
+        //G.allyFire.add(sprite);
         // G.mainCollision.add(sprite);
         
         //blocked: potential bug with collideSpriteVsTilemapLayer()
@@ -111,7 +112,7 @@ class Bullet extends BaseActor {
     
     Render()
     {
-        
+
     }
     
     Shutdown()

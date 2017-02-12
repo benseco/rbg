@@ -21,9 +21,9 @@ class Main extends BaseState
 
     Create()
     {
-
-        this.game.physics.startSystem(Phaser.Physics.ARCADE);
         
+        //this.game.physics.p2.contactMaterial.restitution = 0;
+        //this.game.physics.p2.contactMaterial.stiffness = Number.MAX_VALUE;
         //this.useTestMap();
 
         

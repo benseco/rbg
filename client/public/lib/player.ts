@@ -16,17 +16,24 @@ class Player extends BaseActor {
     Preload()
     {
         G.game.load.spritesheet('testplayer', '../res/sprite/testplayer.png',16,32);
+        G.game.load.image('bullet', '../res/sprite/bullet.png');
     }
 
     Create()
     {
         let sprite = G.getSprite('testplayer', 250, 80);
-        sprite.anchor.setTo(0.5, 0.5);
-        G.game.physics.enable(sprite);
-        arcb(sprite).collideWorldBounds = true;
-        arcb(sprite).setSize(16,16,0,16);
-        arcb(sprite).mass = 40;
-        arcb(sprite).drag = new Phaser.Point(this.speed, this.speed);
+        G.game.physics.p2.enable(sprite, true);
+        p2b(sprite).collideWorldBounds = true;
+        p2b(sprite).setRectangle(16,16);
+        p2b(sprite).offset = new Phaser.Point(0,-16);
+        //p2b(sprite).updateCollisionMask();
+        p2b(sprite).mass = 1;
+        p2b(sprite).fixedRotation = true;
+        p2b(sprite).damping = 0.99;
+
+        p2b(sprite).setCollisionGroup(G.physicCollision);
+        p2b(sprite).collides(G.physicCollision);
+
 
         this.cursors = G.game.input.keyboard.createCursorKeys();
 
@@ -38,10 +45,6 @@ class Player extends BaseActor {
 
         this.setMainSprite(sprite);
         G.game.camera.follow(this.mainSprite);
-
-        
-        //Temporary hack
-        G.physicCollision.add(sprite)
 
         this.isShooting = false;
 
@@ -57,9 +60,9 @@ class Player extends BaseActor {
     
     Render()
     {
-        G.game.debug.text("Wind: " + this.wind, 32, 64, 'rgb(255,255,255)');
-        G.game.debug.text("Vx: " + (arcb(this.mainSprite).velocity.x * arcb(this.mainSprite).velocity.x > 1 ? arcb(this.mainSprite).velocity.x : 0), 32, 140, 'rgb(255,255,255)');
-        G.game.debug.text("Vy: " + (arcb(this.mainSprite).velocity.y * arcb(this.mainSprite).velocity.y > 1 ? arcb(this.mainSprite).velocity.y : 0), 32, 160, 'rgb(255,255,255)');
+        //G.game.debug.text("Wind: " + this.wind, 32, 64, 'rgb(255,255,255)');
+        G.game.debug.text("Vx: " + (p2b(this.mainSprite).velocity.x * p2b(this.mainSprite).velocity.x > 1 ? p2b(this.mainSprite).velocity.x : 0), 32, 140, 'rgb(255,255,255)');
+        G.game.debug.text("Vy: " + (p2b(this.mainSprite).velocity.y * p2b(this.mainSprite).velocity.y > 1 ? p2b(this.mainSprite).velocity.y : 0), 32, 160, 'rgb(255,255,255)');
     }
     
     Shutdown()
@@ -70,71 +73,118 @@ class Player extends BaseActor {
     tryMove()
     {
         this.mainSprite.scale.setTo(2,2);
-
+        
         if (G.game.input.keyboard.isDown(Phaser.Keyboard.S) || G.game.input.keyboard.isDown(Phaser.Keyboard.W) ||
              G.game.input.keyboard.isDown(Phaser.Keyboard.A) || G.game.input.keyboard.isDown(Phaser.Keyboard.D))
         {
-            let direction: Phaser.Point = new Phaser.Point();
             if (G.game.input.keyboard.isDown(Phaser.Keyboard.A))
             {
-                direction.add(-1,0);
+                p2b(this.mainSprite).thrustLeft(2000 * p2b(this.mainSprite).mass);
 
                 this.mainSprite.scale.setTo(-2,2);
                 this.mainSprite.animations.play('leftright');
             }
             else if (G.game.input.keyboard.isDown(Phaser.Keyboard.D))
             {
-                direction.add(1,0);
+                p2b(this.mainSprite).thrustRight(2000 * p2b(this.mainSprite).mass);
 
                 this.mainSprite.animations.play('leftright');
             }
 
             if (G.game.input.keyboard.isDown(Phaser.Keyboard.W))
             {
-                direction.add(0,-1);
-                
+                p2b(this.mainSprite).thrust(2000 * p2b(this.mainSprite).mass);
+
                 if (!G.game.input.keyboard.isDown(Phaser.Keyboard.D) && !G.game.input.keyboard.isDown(Phaser.Keyboard.A)) this.mainSprite.animations.play('backward');
             }
             else if (G.game.input.keyboard.isDown(Phaser.Keyboard.S))
             {
-                direction.add(0,1);
+                p2b(this.mainSprite).reverse(2000 * p2b(this.mainSprite).mass);
 
                 if (!G.game.input.keyboard.isDown(Phaser.Keyboard.D) && !G.game.input.keyboard.isDown(Phaser.Keyboard.A)) this.mainSprite.animations.play('forward');
             }
-
-            direction.normalize().multiply(this.speed, this.speed);
-            arcb(this.mainSprite).velocity.x += ((direction.x - arcb(this.mainSprite).velocity.x) / (this.speed * .001)) * G.game.time.physicsElapsed;
-            arcb(this.mainSprite).velocity.y += ((direction.y - arcb(this.mainSprite).velocity.y) / (this.speed * .001)) * G.game.time.physicsElapsed;
-
-
         }
         else
         {
             this.mainSprite.animations.play('idlefront');
         }
 
-        //arcb(this.mainSprite).velocity.multiply(.9,.9);
-        //arcb(this.mainSprite).acceleration.multiply(.5,.5);
-
-        /*
-        //TESTING WIND
-        
-        if (G.game.input.keyboard.isDown(Phaser.Keyboard.M)) this.wind = !this.wind;
-        if (this.wind)
-        {
-            this.applyForce(new Phaser.Point(0,-1500));
-        }
-
-        //TESTING INSTANTANEOUS FORCES
         if (G.game.input.keyboard.isDown(Phaser.Keyboard.P))
         {
-            console.log("PUSHED");
-            this.applyForce(new Phaser.Point(0,20000));
+            p2b(this.mainSprite).thrustLeft(2000 * p2b(this.mainSprite).mass);
         }
-        */
     }
 
-    wind: boolean = false;
+    // tryMove()
+    // {
+    //     this.mainSprite.scale.setTo(2,2);
+
+    //     if (G.game.input.keyboard.isDown(Phaser.Keyboard.S) || G.game.input.keyboard.isDown(Phaser.Keyboard.W) ||
+    //          G.game.input.keyboard.isDown(Phaser.Keyboard.A) || G.game.input.keyboard.isDown(Phaser.Keyboard.D))
+    //     {
+    //         let direction: Phaser.Point = new Phaser.Point();
+    //         if (G.game.input.keyboard.isDown(Phaser.Keyboard.A))
+    //         {
+    //             direction.add(-1,0);
+
+    //             this.mainSprite.scale.setTo(-2,2);
+    //             this.mainSprite.animations.play('leftright');
+    //         }
+    //         else if (G.game.input.keyboard.isDown(Phaser.Keyboard.D))
+    //         {
+    //             direction.add(1,0);
+
+    //             this.mainSprite.animations.play('leftright');
+    //         }
+
+    //         if (G.game.input.keyboard.isDown(Phaser.Keyboard.W))
+    //         {
+    //             direction.add(0,-1);
+                
+    //             if (!G.game.input.keyboard.isDown(Phaser.Keyboard.D) && !G.game.input.keyboard.isDown(Phaser.Keyboard.A)) this.mainSprite.animations.play('backward');
+    //         }
+    //         else if (G.game.input.keyboard.isDown(Phaser.Keyboard.S))
+    //         {
+    //             direction.add(0,1);
+
+    //             if (!G.game.input.keyboard.isDown(Phaser.Keyboard.D) && !G.game.input.keyboard.isDown(Phaser.Keyboard.A)) this.mainSprite.animations.play('forward');
+    //         }
+
+    //         direction.normalize().multiply(this.speed, this.speed);
+    //         p2b(this.mainSprite).velocity.x += ((direction.x - p2b(this.mainSprite).velocity.x) / (this.speed * .001)) * G.game.time.physicsElapsed;
+    //         p2b(this.mainSprite).velocity.y += ((direction.y - p2b(this.mainSprite).velocity.y) / (this.speed * .001)) * G.game.time.physicsElapsed;
+
+
+    //     }
+    //     else
+    //     {
+    //         this.mainSprite.animations.play('idlefront');
+    //     }
+
+    //     //this.drag();
+
+    //     //arcb(this.mainSprite).velocity.multiply(.9,.9);
+    //     //arcb(this.mainSprite).acceleration.multiply(.5,.5);
+
+    //     /*
+    //     //TESTING WIND
+        
+    //     if (G.game.input.keyboard.isDown(Phaser.Keyboard.M)) this.wind = !this.wind;
+    //     if (this.wind)
+    //     {
+    //         this.applyForce(new Phaser.Point(0,-1500));
+    //     }
+
+    //     //TESTING INSTANTANEOUS FORCES
+    //     if (G.game.input.keyboard.isDown(Phaser.Keyboard.P))
+    //     {
+    //         console.log("PUSHED");
+    //         this.applyForce(new Phaser.Point(0,20000));
+    //     }
+    //     */
+    // }
+
+    // wind: boolean = false;
 
     tryShoot()
     {
