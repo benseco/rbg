@@ -64,7 +64,7 @@ abstract class BaseState extends Phaser.State
         //this.game.physics.arcade.collide(G.enemyHitboxes, G.allyFire);
         //this.game.physics.arcade.collide(G.allyHitboxes, G.enemyFire);
         
-        // G.physicCollision.sort('y',Phaser.Group.SORT_ASCENDING);
+        G.game.world.sort('y',Phaser.Group.SORT_ASCENDING);
     }
 
     render() {

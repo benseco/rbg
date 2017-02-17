@@ -32,7 +32,7 @@ class Genesis
     }
 
     private static recyclables: { [key: string]: Array<Phaser.Sprite>; };
-    static getSprite(key: string, x?: number, y?: number): Phaser.Sprite
+    static getSprite(key?: string, x?: number, y?: number): Phaser.Sprite
     {
         let sprite: Phaser.Sprite;
         let sprites = Genesis.recyclables[key];

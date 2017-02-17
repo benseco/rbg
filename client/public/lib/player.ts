@@ -10,7 +10,7 @@ class Player extends BaseActor {
     constructor()
     {
         super();
-        this.weaponSystem = new MainWeapon();
+        //this.weaponSystem = new MainWeapon();
     }
 
     Preload()
@@ -23,16 +23,46 @@ class Player extends BaseActor {
     {
         let sprite = G.getSprite('testplayer', 250, 80);
         G.game.physics.p2.enable(sprite, true);
-        p2b(sprite).collideWorldBounds = true;
+        //p2b(sprite).collideWorldBounds = true;
         p2b(sprite).setRectangle(16,16);
         p2b(sprite).offset = new Phaser.Point(0,-16);
         //p2b(sprite).updateCollisionMask();
         p2b(sprite).mass = 1;
         p2b(sprite).fixedRotation = true;
-        p2b(sprite).damping = 0.99;
+        p2b(sprite).damping = 0.999;
 
         p2b(sprite).setCollisionGroup(G.physicCollision);
         p2b(sprite).collides(G.physicCollision);
+
+        this.hitbox = G.getSprite();
+        this.hitbox.width = 4;
+        this.hitbox.height = 40;
+        
+        G.game.physics.p2.enable(this.hitbox, true);
+        p2b(this.hitbox).fixedRotation = true;
+
+        p2b(this.hitbox).setCollisionGroup(G.allyHitboxes);
+        p2b(this.hitbox).collides(G.enemyFire);
+        
+        G.game.physics.p2.createLockConstraint(sprite, this.hitbox);
+        G.game.physics.p2.createRevoluteConstraint(sprite, [0, 0], this.hitbox, [0, 0]);
+
+        //THIN BOX
+        let thinbox = G.getSprite();
+        thinbox.width = 600;
+        thinbox.height = 10;
+        thinbox.x = 20;
+        thinbox.y = 400;
+        
+        G.game.physics.p2.enable(thinbox, true);
+        p2b(thinbox).fixedRotation = true;
+        p2b(thinbox).static = true;
+
+        p2b(thinbox).setCollisionGroup(G.physicCollision);
+        p2b(thinbox).collides(G.physicCollision);
+        //END THIN BOX
+
+
 
 
         this.cursors = G.game.input.keyboard.createCursorKeys();
@@ -50,6 +80,8 @@ class Player extends BaseActor {
 
     }
 
+    hitbox: any;
+
     Update()
     {
         this.tryMove();
@@ -63,6 +95,9 @@ class Player extends BaseActor {
         //G.game.debug.text("Wind: " + this.wind, 32, 64, 'rgb(255,255,255)');
         G.game.debug.text("Vx: " + (p2b(this.mainSprite).velocity.x * p2b(this.mainSprite).velocity.x > 1 ? p2b(this.mainSprite).velocity.x : 0), 32, 140, 'rgb(255,255,255)');
         G.game.debug.text("Vy: " + (p2b(this.mainSprite).velocity.y * p2b(this.mainSprite).velocity.y > 1 ? p2b(this.mainSprite).velocity.y : 0), 32, 160, 'rgb(255,255,255)');
+
+
+        G.game.debug.spriteBounds(this.hitbox);
     }
     
     Shutdown()
@@ -192,6 +227,7 @@ class Player extends BaseActor {
         {
             if(!this.isShooting)
             {
+                //for (let i=0; i<50; i++)
                 new Bullet(this.mainSprite.x, this.mainSprite.y);
                 this.isShooting = true;
             }

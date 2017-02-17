@@ -26,10 +26,17 @@ class Bullet extends BaseActor {
     {
         let sprite = G.getSprite('bullet', this.x, this.y);
         //sprite.anchor.setTo(0.5, 0.5);
-        G.game.physics.p2.enable(sprite, true);
-        p2b(sprite).collideWorldBounds = true;
+        G.game.physics.p2.enable(sprite);
+        //p2b(sprite).collideWorldBounds = true;
         p2b(sprite).setRectangle(4,4,0,0);
         p2b(sprite).fixedRotation = true;
+
+        
+        (p2b(sprite).data as any).ccdSpeedThreshold = 0;
+		(p2b(sprite).data as any).ccdIterations = 5;
+        
+        p2b(sprite).setCollisionGroup(G.physicCollision);
+        p2b(sprite).collides(G.physicCollision);
 
         // sprite.animations.add('leftright',[2,3],5,true);
         // sprite.animations.add('idlefront',[0]);
@@ -39,8 +46,8 @@ class Bullet extends BaseActor {
 
         this.setMainSprite(sprite);
         this.mainSprite.scale.setTo(2,2);
-        // arcb(this.mainSprite).velocity.set(this.x1 - this.x0, this.y1 - this.y0);
-        G.game.physics.arcade.moveToPointer(this.mainSprite, 400);
+        p2b(this.mainSprite).thrust(100000);
+        //G.game.physics.arcade.moveToPointer(this.mainSprite, 400);
         // arcb(this.mainSprite).velocity.normalize().multiply(400,400);
 
 
