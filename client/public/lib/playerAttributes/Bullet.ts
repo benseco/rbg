@@ -33,10 +33,10 @@ class Bullet extends BaseActor {
 
         
         (p2b(sprite).data as any).ccdSpeedThreshold = 0;
-		(p2b(sprite).data as any).ccdIterations = 5;
+		(p2b(sprite).data as any).ccdIterations = 10;
         
-        p2b(sprite).setCollisionGroup(G.physicCollision);
-        p2b(sprite).collides(G.physicCollision);
+        p2b(sprite).setCollisionGroup(G.allyFire);
+        p2b(sprite).collides(G.enemyHitboxes);
 
         // sprite.animations.add('leftright',[2,3],5,true);
         // sprite.animations.add('idlefront',[0]);

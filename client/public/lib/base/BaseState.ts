@@ -31,6 +31,10 @@ abstract class BaseState extends Phaser.State
         this.game.physics.startSystem(Phaser.Physics.P2JS);
         //this.game.physics.p2.setImpactEvents(true);
 
+        this.game.physics.p2.contactMaterial.restitution = 1;
+        this.game.physics.p2.contactMaterial.stiffness = Number.MAX_VALUE;
+
+
         G.physicCollision = this.game.physics.p2.createCollisionGroup();
         G.enemyHitboxes = this.game.physics.p2.createCollisionGroup();
         G.enemyFire = this.game.physics.p2.createCollisionGroup();

@@ -27,25 +27,29 @@ class Player extends BaseActor {
         p2b(sprite).setRectangle(16,16);
         p2b(sprite).offset = new Phaser.Point(0,-16);
         //p2b(sprite).updateCollisionMask();
-        p2b(sprite).mass = 1;
+        p2b(sprite).mass = 200;
         p2b(sprite).fixedRotation = true;
         p2b(sprite).damping = 0.999;
+
+        (p2b(sprite).data as any).ccdSpeedThreshold = 0;
+		(p2b(sprite).data as any).ccdIterations = 10;
 
         p2b(sprite).setCollisionGroup(G.physicCollision);
         p2b(sprite).collides(G.physicCollision);
 
         this.hitbox = G.getSprite();
-        this.hitbox.width = 4;
-        this.hitbox.height = 40;
+        this.hitbox.width = 8;
+        this.hitbox.height = 100;
         
         G.game.physics.p2.enable(this.hitbox, true);
         p2b(this.hitbox).fixedRotation = true;
+        p2b(this.hitbox).mass = 200;
 
-        p2b(this.hitbox).setCollisionGroup(G.allyHitboxes);
-        p2b(this.hitbox).collides(G.enemyFire);
+        p2b(this.hitbox).setCollisionGroup(G.enemyHitboxes);
+        p2b(this.hitbox).collides(G.allyFire);
         
         G.game.physics.p2.createLockConstraint(sprite, this.hitbox);
-        G.game.physics.p2.createRevoluteConstraint(sprite, [0, 0], this.hitbox, [0, 0]);
+        //G.game.physics.p2.createRevoluteConstraint(sprite, [0, 0], this.hitbox, [0, 0]);
 
         //THIN BOX
         let thinbox = G.getSprite();
@@ -58,8 +62,8 @@ class Player extends BaseActor {
         p2b(thinbox).fixedRotation = true;
         p2b(thinbox).static = true;
 
-        p2b(thinbox).setCollisionGroup(G.physicCollision);
-        p2b(thinbox).collides(G.physicCollision);
+        p2b(thinbox).setCollisionGroup(G.enemyHitboxes);
+        p2b(thinbox).collides(G.allyFire);
         //END THIN BOX
 
 
