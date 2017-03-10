@@ -51,9 +51,10 @@ abstract class BaseState extends Phaser.State
         //ADD UNNIVERSAL CODE HERE
         this.game.stage.backgroundColor = "#dddddd";
 
-        this.game.time.advancedTiming = true;
-        //this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-        Phaser.Canvas.setImageRenderingCrisp(this.game.canvas);
+        //this.game.time.advancedTiming = true;
+        this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        this.game.clearBeforeRender = false;
+        //Phaser.Canvas.setImageRenderingCrisp(this.game.canvas);
         //END OF UNIVERSAL CODE
 
         G.create.dispatch();
@@ -75,7 +76,7 @@ abstract class BaseState extends Phaser.State
         G.render.dispatch();
 
         //ADD UNNIVERSAL CODE HERE
-        this.game.debug.text(this.game.time.fps.toString(), 32, 32, 'rgb(255,255,255)');
+        //this.game.debug.text(this.game.time.fps.toString(), 32, 32, 'rgb(255,255,255)');
         //END OF UNIVERSALE CODE
         
     }
