@@ -52,7 +52,7 @@ abstract class BaseState extends Phaser.State
         this.game.stage.backgroundColor = "#dddddd";
 
         //this.game.time.advancedTiming = true;
-        this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        //this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         this.game.clearBeforeRender = false;
         //Phaser.Canvas.setImageRenderingCrisp(this.game.canvas);
         //END OF UNIVERSAL CODE
