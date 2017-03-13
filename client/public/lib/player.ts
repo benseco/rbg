@@ -24,8 +24,8 @@ class Player extends BaseActor {
         let sprite = G.getSprite('testplayer', 250, 80);
         G.game.physics.p2.enable(sprite, true);
         //p2b(sprite).collideWorldBounds = true;
-        p2b(sprite).setRectangle(16,16);
-        p2b(sprite).offset = new Phaser.Point(0,-16);
+        p2b(sprite).setCircle(16);
+        //p2b(sprite).offset = new Phaser.Point(0,-16);
         //p2b(sprite).updateCollisionMask();
         p2b(sprite).mass = 200;
         p2b(sprite).fixedRotation = true;

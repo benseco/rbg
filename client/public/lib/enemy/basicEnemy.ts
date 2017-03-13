@@ -11,10 +11,10 @@ class BasicEnemy extends BaseActor {
         let sprite = G.getSprite('basicenemy', 300, 80);
         G.game.physics.p2.enable(sprite, true);
         p2b(sprite).collideWorldBounds = true;
-        p2b(sprite).setRectangle(16,16);
+        p2b(sprite).setCircle(16);
         p2b(sprite).mass = 15;
         p2b(sprite).static = true;
-        p2b(sprite).offset = new Phaser.Point(0,-16);
+        //p2b(sprite).offset = new Phaser.Point(0,-16);
         //p2b(sprite).updateCollisionMask();
 
         p2b(sprite).setCollisionGroup(G.physicCollision);
