@@ -39,11 +39,13 @@ class Player extends BaseActor {
 
         this.hitbox = G.getSprite();
         this.hitbox.width = 8;
-        this.hitbox.height = 100;
-        
+        this.hitbox.height = 80;
+
         G.game.physics.p2.enable(this.hitbox, true);
         p2b(this.hitbox).fixedRotation = true;
         p2b(this.hitbox).mass = 200;
+        p2b(this.hitbox).x = sprite.x;
+        p2b(this.hitbox).y = sprite.y;
 
         p2b(this.hitbox).setCollisionGroup(G.enemyHitboxes);
         p2b(this.hitbox).collides(G.allyFire);
@@ -84,7 +86,7 @@ class Player extends BaseActor {
 
     }
 
-    hitbox: any;
+    hitbox: Phaser.Sprite;
 
     Update()
     {
@@ -101,7 +103,7 @@ class Player extends BaseActor {
         //G.game.debug.text("Vy: " + (p2b(this.mainSprite).velocity.y * p2b(this.mainSprite).velocity.y > 1 ? p2b(this.mainSprite).velocity.y : 0), 32, 160, 'rgb(255,255,255)');
 
 
-        //G.game.debug.spriteBounds(this.hitbox);
+        G.game.debug.spriteBounds(this.hitbox);
     }
     
     Shutdown()
