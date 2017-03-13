@@ -103,7 +103,7 @@ class Player extends BaseActor {
         //G.game.debug.text("Vy: " + (p2b(this.mainSprite).velocity.y * p2b(this.mainSprite).velocity.y > 1 ? p2b(this.mainSprite).velocity.y : 0), 32, 160, 'rgb(255,255,255)');
 
 
-        G.game.debug.spriteBounds(this.hitbox);
+        //G.game.debug.spriteBounds(this.hitbox);
     }
     
     Shutdown()
