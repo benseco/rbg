@@ -17,6 +17,11 @@ class Main extends BaseState
         this.game.load.tilemap('testmap', '../res/map/testmap.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.image('tiles', '../res/map/testset.png');
         this.game.load.image('car', '../res/sprite/car90.png');
+
+        
+        this.game.load.image('map1', '../res/map/testmap.png');
+
+
     }
 
     Create()
@@ -25,6 +30,9 @@ class Main extends BaseState
         //this.game.physics.p2.contactMaterial.restitution = 0;
         //this.game.physics.p2.contactMaterial.stiffness = Number.MAX_VALUE;
         //this.useTestMap();
+
+        this.game.add.image(0,0,"map1");
+        this.game.world.resize(4000,4000)
 
         
 

@@ -26,17 +26,20 @@ class Bullet extends BaseActor {
     {
         let sprite = G.getSprite('bullet', this.x, this.y);
         //sprite.anchor.setTo(0.5, 0.5);
-        G.game.physics.p2.enable(sprite);
+        G.game.physics.box2d.enable(sprite);
         //p2b(sprite).collideWorldBounds = true;
-        p2b(sprite).setRectangle(4,4,0,0);
-        p2b(sprite).fixedRotation = true;
+        b2d(sprite).setRectangle(15,15,0,0);
+        b2d(sprite).fixedRotation = true;
+        b2d(sprite).restitution = 1;
+        b2d(sprite).setCollisionCategory(0x0010);
+        b2d(sprite).setCollisionMask(0x1101);
 
         
-        (p2b(sprite).data as any).ccdSpeedThreshold = 0;
-		(p2b(sprite).data as any).ccdIterations = 10;
+        // (p2b(sprite).data as any).ccdSpeedThreshold = 0;
+		// (p2b(sprite).data as any).ccdIterations = 10;
         
-        p2b(sprite).setCollisionGroup(G.allyFire);
-        p2b(sprite).collides(G.enemyHitboxes);
+        // p2b(sprite).setCollisionGroup(G.allyFire);
+        // p2b(sprite).collides(G.enemyHitboxes);
 
         // sprite.animations.add('leftright',[2,3],5,true);
         // sprite.animations.add('idlefront',[0]);
@@ -46,7 +49,7 @@ class Bullet extends BaseActor {
 
         this.setMainSprite(sprite);
         this.mainSprite.scale.setTo(2,2);
-        p2b(this.mainSprite).thrust(100000);
+        b2d(this.mainSprite).thrust(100000);
         //G.game.physics.arcade.moveToPointer(this.mainSprite, 400);
         // arcb(this.mainSprite).velocity.normalize().multiply(400,400);
 
@@ -56,16 +59,18 @@ class Bullet extends BaseActor {
         // G.mainCollision.add(sprite);
         
         //blocked: potential bug with collideSpriteVsTilemapLayer()
-        this.mainSprite.body.onCollide = new Phaser.Signal();
-        this.mainSprite.body.onCollide.add(this.onCollide, this);
+        //this.mainSprite.body.onCollide = new Phaser.Signal();
+        //this.mainSprite.body.onCollide.add(this.onCollide, this);
 
     }
 
+    /*
     onCollide()
     {
         G.killSprite(this.mainSprite);
         this.destroy();
     }
+    */
 
     Update()
     {

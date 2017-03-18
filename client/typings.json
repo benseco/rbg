@@ -3,13 +3,13 @@
     "debug": "registry:npm/debug#2.0.0+20160723033700",
     "mime": "registry:npm/mime#1.3.0+20160723033700"
   },
-  "globalDevDependencies": {
-    "phaser": "github:photonstorm/phaser-ce/typescript/typings.json"
-  },
+  "globalDevDependencies": {},
   "globalDependencies": {
+    "box2djs": "file:..\\localtsd\\custom\\box2d.d.ts",
     "express": "registry:dt/express#4.0.0+20160708185218",
     "express-serve-static-core": "registry:dt/express-serve-static-core#4.0.0+20160914120416",
     "node": "registry:dt/node#6.0.0+20160919063032",
+    "phaser_box2d": "file:..\\localtsd\\custom\\phaser_box2d.d.ts",
     "serve-static": "registry:dt/serve-static#0.0.0+20160606155157"
   }
 }

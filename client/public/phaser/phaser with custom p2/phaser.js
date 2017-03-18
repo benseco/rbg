@@ -1381,7 +1381,7 @@ var bodiesOverlap_shapePositionB = vec2.create();
  * @return {Boolean}
  * @todo shape world transforms are wrong
  */
-Narrowphase.prototype.bodiesOverlap = function(bodyA, bodyB){
+Narrowphase.prototype.bodiesOverlap = function(bodyA, bodyB, checkCollisionMasks){
     var shapePositionA = bodiesOverlap_shapePositionA;
     var shapePositionB = bodiesOverlap_shapePositionB;
 
@@ -1394,6 +1394,10 @@ Narrowphase.prototype.bodiesOverlap = function(bodyA, bodyB){
         // All shapes of body j
         for(var l=0, Nshapesj=bodyB.shapes.length; l!==Nshapesj; l++){
             var shapeB = bodyB.shapes[l];
+
+            if(checkCollisionMasks && !((shapeA.collisionGroup & shapeB.collisionMask) !== 0 && (shapeB.collisionGroup & shapeA.collisionMask) !== 0)){ 
+                return; 
+            } 
 
             bodyB.toWorldFrame(shapePositionB, shapeB.position);
 
@@ -2368,7 +2372,7 @@ function pointInConvex(worldPoint,convexShape,convexOffset,convexAngle){
         }
 
         // If we got a different sign of the distance vector, the point is out of the polygon
-        if(cross*lastCross <= 0){
+        if(cross*lastCross < 0){
             return false;
         }
         lastCross = cross;
@@ -2432,7 +2436,7 @@ Narrowphase.prototype.particleConvex = function(
 
     // Check if the particle is in the polygon at all
     if(!pointInConvex(particleOffset,convexShape,convexOffset,convexAngle)){
-        return 0;
+        return justTest ? false : 0;
     }
 
     if(justTest){
@@ -8648,7 +8652,8 @@ Body.prototype.integrate = function(dt){
 
 var result = new RaycastResult();
 var ray = new Ray({
-    mode: Ray.ALL
+    mode: Ray.CLOSEST,
+    skipBackfaces: true
 });
 var direction = vec2.create();
 var end = vec2.create();
@@ -8659,6 +8664,21 @@ Body.prototype.integrateToTimeOfImpact = function(dt){
     if(this.ccdSpeedThreshold < 0 || vec2.squaredLength(this.velocity) < Math.pow(this.ccdSpeedThreshold, 2)){
         return false;
     }
+
+    
+    // Ignore all the ignored body pairs 
+    // This should probably be done somewhere else for optimization 
+    var ignoreBodies = []; 
+    var disabledPairs = this.world.disabledBodyCollisionPairs; 
+    for(var i=0; i<disabledPairs.length; i+=2){ 
+        var bodyA = disabledPairs[i]; 
+        var bodyB = disabledPairs[i+1]; 
+        if(bodyA === this){ 
+            ignoreBodies.push(bodyB); 
+        } else if(bodyB === this){ 
+            ignoreBodies.push(bodyA); 
+        } 
+    } 
 
     vec2.normalize(direction, this.velocity);
 
@@ -8671,27 +8691,36 @@ Body.prototype.integrateToTimeOfImpact = function(dt){
 
     var timeOfImpact = 1;
 
-    var hit;
-    var that = this;
-    result.reset();
-    ray.callback = function (result) {
-        if(result.body === that){
-            return;
-        }
-        hit = result.body;
-        result.getHitPoint(end, ray);
-        vec2.sub(startToEnd, end, that.position);
-        timeOfImpact = vec2.length(startToEnd) / len;
-        result.stop();
-    };
+    var hitBody;
+    
     vec2.copy(ray.from, this.position);
     vec2.copy(ray.to, end);
     ray.update();
-    this.world.raycast(result, ray);
 
-    if(!hit){
+    for(var i=0; i<this.shapes.length; i++){ 
+        var shape = this.shapes[i]; 
+
+        ray.collisionGroup = shape.collisionGroup; 
+        ray.collisionMask = shape.collisionMask; 
+        this.world.raycast(result, ray); 
+        hitBody = result.body;
+
+        if(hitBody === this || ignoreBodies.indexOf(hitBody) !== -1){
+            hitBody = null;
+        }
+
+        if(hitBody){ 
+            break; 
+        } 
+    } 
+
+    if(!hitBody || !timeOfImpact){
         return false;
     }
+
+    result.getHitPoint(end, ray); 
+    vec2.sub(startToEnd, end, this.position); 
+    timeOfImpact = vec2.distance(end, this.position) / len; // guess 
 
     var rememberAngle = this.angle;
     vec2.copy(rememberPosition, this.position);
@@ -8699,22 +8728,22 @@ Body.prototype.integrateToTimeOfImpact = function(dt){
     // Got a start and end point. Approximate time of impact using binary search
     var iter = 0;
     var tmin = 0;
-    var tmid = 0;
-    var tmax = timeOfImpact;
+    var tmid = timeOfImpact;
+    var tmax = 1;
     while (tmax >= tmin && iter < this.ccdIterations) {
         iter++;
 
         // calculate the midpoint
-        tmid = (tmax - tmin) / 2;
+        tmid = (tmax + tmin) / 2;
 
         // Move the body to that point
-        vec2.scale(integrate_velodt, startToEnd, timeOfImpact);
+        vec2.scale(integrate_velodt, startToEnd, tmid);
         vec2.add(this.position, rememberPosition, integrate_velodt);
-        this.angle = rememberAngle + startToEndAngle * timeOfImpact;
+        this.angle = rememberAngle + startToEndAngle * tmid;
         this.updateAABB();
 
         // check overlap
-        var overlaps = this.aabb.overlaps(hit.aabb) && this.world.narrowphase.bodiesOverlap(this, hit);
+        var overlaps = this.aabb.overlaps(hitBody.aabb) && this.world.narrowphase.bodiesOverlap(this, hitBody, true);
 
         if (overlaps) {
             // change min to search upper interval
@@ -8725,7 +8754,7 @@ Body.prototype.integrateToTimeOfImpact = function(dt){
         }
     }
 
-    timeOfImpact = tmid;
+    timeOfImpact = tmax;
 
     vec2.copy(this.position, rememberPosition);
     this.angle = rememberAngle;

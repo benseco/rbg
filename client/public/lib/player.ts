@@ -3,6 +3,8 @@ class Player extends BaseActor {
     cursors: Phaser.CursorKeys;
     isShooting: boolean;
 
+    bullets: number;
+
     weaponSystem: MainWeapon;
 
     speed: number = 400; // double what you want
@@ -11,6 +13,7 @@ class Player extends BaseActor {
     {
         super();
         //this.weaponSystem = new MainWeapon();
+        this.bullets = 0;
     }
 
     Preload()
@@ -22,21 +25,24 @@ class Player extends BaseActor {
     Create()
     {
         let sprite = G.getSprite('testplayer', 250, 80);
-        G.game.physics.p2.enable(sprite, true);
+        G.game.physics.box2d.enable(sprite, true);
         //p2b(sprite).collideWorldBounds = true;
-        p2b(sprite).setCircle(16);
+        b2d(sprite).setCircle(16);
+        // b2d(sprite).clearShapes();
+        // b2d(sprite).loadPolygon(null,[{shape: [0,0,20,0,20,20,0,10]}] as any)
         //p2b(sprite).offset = new Phaser.Point(0,-16);
         //p2b(sprite).updateCollisionMask();
-        p2b(sprite).mass = 200;
-        p2b(sprite).fixedRotation = true;
-        p2b(sprite).damping = 0.999;
+        b2d(sprite).mass = 1;
+        b2d(sprite).fixedRotation = true;
+        b2d(sprite).linearDamping = 10;
 
-        (p2b(sprite).data as any).ccdSpeedThreshold = 0;
-		(p2b(sprite).data as any).ccdIterations = 10;
+        // (p2b(sprite).data as any).ccdSpeedThreshold = 0;
+		// (p2b(sprite).data as any).ccdIterations = 10;
 
-        p2b(sprite).setCollisionGroup(G.physicCollision);
-        p2b(sprite).collides(G.physicCollision);
+        // p2b(sprite).setCollisionGroup(G.physicCollision);
+        // p2b(sprite).collides(G.physicCollision);
 
+/*
         this.hitbox = G.getSprite();
         this.hitbox.width = 8;
         this.hitbox.height = 80;
@@ -52,20 +58,20 @@ class Player extends BaseActor {
         
         G.game.physics.p2.createLockConstraint(sprite, this.hitbox);
         //G.game.physics.p2.createRevoluteConstraint(sprite, [0, 0], this.hitbox, [0, 0]);
-
+*/
         //THIN BOX
-        let thinbox = G.getSprite();
-        thinbox.width = 600;
-        thinbox.height = 10;
-        thinbox.x = 20;
-        thinbox.y = 400;
+        // let thinbox = G.getSprite();
+        // thinbox.width = 600;
+        // thinbox.height = 10;
+        // thinbox.x = 20;
+        // thinbox.y = 400;
         
-        G.game.physics.p2.enable(thinbox, true);
-        p2b(thinbox).fixedRotation = true;
-        p2b(thinbox).static = true;
+        // G.game.physics.p2.enable(thinbox, true);
+        // p2b(thinbox).fixedRotation = true;
+        // p2b(thinbox).static = true;
 
-        p2b(thinbox).setCollisionGroup(G.enemyHitboxes);
-        p2b(thinbox).collides(G.allyFire);
+        // p2b(thinbox).setCollisionGroup(G.enemyHitboxes);
+        // p2b(thinbox).collides(G.allyFire);
         //END THIN BOX
 
 
@@ -96,6 +102,7 @@ class Player extends BaseActor {
         
     }
     
+    frame: number = 0;
     Render()
     {
         //G.game.debug.text("Wind: " + this.wind, 32, 64, 'rgb(255,255,255)');
@@ -104,6 +111,10 @@ class Player extends BaseActor {
 
 
         //G.game.debug.spriteBounds(this.hitbox);
+
+        if (this.frame % 60 == 0)
+            G.game.debug.text("Bullets: " + this.bullets, 32, 64, 'rgb(255,255,255)');
+        this.frame += 1;
     }
     
     Shutdown()
@@ -120,27 +131,27 @@ class Player extends BaseActor {
         {
             if (G.game.input.keyboard.isDown(Phaser.Keyboard.A))
             {
-                p2b(this.mainSprite).thrustLeft(2000 * p2b(this.mainSprite).mass);
+                this.thrustDirectional(200000*G.game.time.physicsElapsed,1,0);
 
                 this.mainSprite.scale.setTo(-2,2);
                 this.mainSprite.animations.play('leftright');
             }
             else if (G.game.input.keyboard.isDown(Phaser.Keyboard.D))
             {
-                p2b(this.mainSprite).thrustRight(2000 * p2b(this.mainSprite).mass);
+                this.thrustDirectional(200000*G.game.time.physicsElapsed,-1,0);
 
                 this.mainSprite.animations.play('leftright');
             }
 
             if (G.game.input.keyboard.isDown(Phaser.Keyboard.W))
             {
-                p2b(this.mainSprite).thrust(2000 * p2b(this.mainSprite).mass);
+                b2d(this.mainSprite).thrust(200000*G.game.time.physicsElapsed);
 
                 if (!G.game.input.keyboard.isDown(Phaser.Keyboard.D) && !G.game.input.keyboard.isDown(Phaser.Keyboard.A)) this.mainSprite.animations.play('backward');
             }
             else if (G.game.input.keyboard.isDown(Phaser.Keyboard.S))
             {
-                p2b(this.mainSprite).reverse(2000 * p2b(this.mainSprite).mass);
+                b2d(this.mainSprite).reverse(200000*G.game.time.physicsElapsed);
 
                 if (!G.game.input.keyboard.isDown(Phaser.Keyboard.D) && !G.game.input.keyboard.isDown(Phaser.Keyboard.A)) this.mainSprite.animations.play('forward');
             }
@@ -152,7 +163,7 @@ class Player extends BaseActor {
 
         if (G.game.input.keyboard.isDown(Phaser.Keyboard.P))
         {
-            p2b(this.mainSprite).thrustLeft(2000 * p2b(this.mainSprite).mass);
+            b2d(this.mainSprite).thrust(2000 * b2d(this.mainSprite).mass);
         }
     }
 
@@ -236,6 +247,7 @@ class Player extends BaseActor {
                 //for (let i=0; i<50; i++)
                 new Bullet(this.mainSprite.x, this.mainSprite.y);
                 this.isShooting = true;
+                this.bullets += 1;
             }
         }
         else if (this.isShooting)

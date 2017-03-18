@@ -21,7 +21,7 @@ abstract class BaseActor {
 
     setMainSprite(sprite: Phaser.Sprite, collides = true) {
         this.mainSprite = sprite;
-        p2b(this.mainSprite).collideWorldBounds = true;
+        b2d(this.mainSprite).collideWorldBounds = true;
     }
 
     destroy()
@@ -43,5 +43,20 @@ abstract class BaseActor {
         arcb(this.mainSprite).velocity.y -= drag.y * G.game.time.physicsElapsed;
     }
     */
+
+    thrustDirectional(power: number, x: number, y: number)
+    {
+        let body = b2d(this.mainSprite);
+        let magnitude = body.world.pxm(power) * body.data.GetMass();
+        
+        let force = new box2d.b2Vec2();
+        body.toWorldVector(force,
+                        (new box2d.b2Vec2(x,y))
+                        .SelfNormalize()
+                        .SelfMul(body.world.pxm(power) * body.data.GetMass()));
+        
+        body.data.ApplyForce( force, body.data.GetWorldCenter(), true );
+
+    }
 
 }
