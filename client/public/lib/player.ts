@@ -75,6 +75,21 @@ class Player extends BaseActor {
         //END THIN BOX
 
 
+        this.ground = new Phaser.Physics.Box2D.Body(G.game, null, 200, 200);
+
+        this.ground.addEdge(0, 0, 100, 0);
+        this.ground.addEdge(100, 0, 100, -100);
+        this.ground.addEdge(100, -100, 300, -100);
+        this.ground.addEdge(300, -100, 300, 100);
+        this.ground.addEdge(300, 100, 400, 100);
+        this.ground.addEdge(400, 100, 400, 200);
+        this.ground.addEdge(400, 200, 100, 200);
+        this.ground.addEdge(100, 200, 100, 150);
+        this.ground.addEdge(100, 150, 0, 150);
+        this.ground.addEdge(0, 150, 0, 0);
+
+        this.ground.static = true;
+
 
 
         this.cursors = G.game.input.keyboard.createCursorKeys();
@@ -91,7 +106,7 @@ class Player extends BaseActor {
         this.isShooting = false;
 
     }
-
+    ground: Phaser.Physics.Box2D.Body;
     hitbox: Phaser.Sprite;
 
     Update()
@@ -115,6 +130,7 @@ class Player extends BaseActor {
         if (this.frame % 60 == 0)
             G.game.debug.text("Bullets: " + this.bullets, 32, 64, 'rgb(255,255,255)');
         this.frame += 1;
+
     }
     
     Shutdown()

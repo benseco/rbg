@@ -4,6 +4,9 @@ server/*.js.map
 client/public/lib.js
 client/public/lib.js.map
 
+#exclude debug.log
+debug.log
+
 #exclude electron
 server/node_modules/**
 
