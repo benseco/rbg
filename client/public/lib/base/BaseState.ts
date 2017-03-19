@@ -72,7 +72,7 @@ abstract class BaseState extends Phaser.State
         G.render.dispatch();
 
         //ADD UNNIVERSAL CODE HERE
-        //(this.game.debug as any).box2dWorld();
+        (this.game.debug as any).box2dWorld();
         //this.game.debug.text(this.game.time.fps.toString(), 32, 32, 'rgb(255,255,255)');
         //END OF UNIVERSALE CODE
         

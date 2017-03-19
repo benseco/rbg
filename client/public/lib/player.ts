@@ -27,10 +27,10 @@ class Player extends BaseActor {
         let sprite = G.getSprite('testplayer', 250, 80);
         G.game.physics.box2d.enable(sprite, true);
         //p2b(sprite).collideWorldBounds = true;
-        b2d(sprite).setCircle(16);
+        b2d(sprite).setCircle(16,0,30);
         // b2d(sprite).clearShapes();
         // b2d(sprite).loadPolygon(null,[{shape: [0,0,20,0,20,20,0,10]}] as any)
-        //p2b(sprite).offset = new Phaser.Point(0,-16);
+        //b2d(sprite).offset = new Phaser.Point(0,-16);
         //p2b(sprite).updateCollisionMask();
         b2d(sprite).mass = 1;
         b2d(sprite).fixedRotation = true;
@@ -42,23 +42,16 @@ class Player extends BaseActor {
         // p2b(sprite).setCollisionGroup(G.physicCollision);
         // p2b(sprite).collides(G.physicCollision);
 
-/*
-        this.hitbox = G.getSprite();
-        this.hitbox.width = 8;
-        this.hitbox.height = 80;
 
-        G.game.physics.p2.enable(this.hitbox, true);
-        p2b(this.hitbox).fixedRotation = true;
-        p2b(this.hitbox).mass = 200;
-        p2b(this.hitbox).x = sprite.x;
-        p2b(this.hitbox).y = sprite.y;
+        this.hitbox = new Phaser.Physics.Box2D.Body(G.game, null, sprite.x, sprite.y);
+        this.hitbox.setRectangle(10,80)
+        //this.hitbox.fixedRotation = true;
+        this.hitbox.setCollisionCategory(0x0010);
+        this.hitbox.setCollisionMask(0x1101);
+        G.game.physics.box2d.weldJoint(sprite, this.hitbox);
 
-        p2b(this.hitbox).setCollisionGroup(G.enemyHitboxes);
-        p2b(this.hitbox).collides(G.allyFire);
-        
-        G.game.physics.p2.createLockConstraint(sprite, this.hitbox);
         //G.game.physics.p2.createRevoluteConstraint(sprite, [0, 0], this.hitbox, [0, 0]);
-*/
+
         //THIN BOX
         // let thinbox = G.getSprite();
         // thinbox.width = 600;
@@ -107,7 +100,7 @@ class Player extends BaseActor {
 
     }
     ground: Phaser.Physics.Box2D.Body;
-    hitbox: Phaser.Sprite;
+    hitbox: Phaser.Physics.Box2D.Body;
 
     Update()
     {
