@@ -8,12 +8,15 @@ class BasicEnemy extends BaseActor {
 
     Create()
     {
-        let sprite = G.getSprite('basicenemy', 300, 80);
+        let sprite = G.getSprite('basicenemy', 300, 600);
         G.game.physics.box2d.enable(sprite);
         b2d(sprite).collideWorldBounds = true;
-        b2d(sprite).setCircle(16);
+        b2d(sprite).setCircle(16, 0, 20);
         b2d(sprite).mass = 15;
         b2d(sprite).static = true;
+
+        b2d(sprite).setCollisionCategory(0b000010); //Physic
+        b2d(sprite).setCollisionMask(0b000011); //Physic and walls
         //p2b(sprite).offset = new Phaser.Point(0,-16);
         //p2b(sprite).updateCollisionMask();
 

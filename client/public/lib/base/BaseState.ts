@@ -65,14 +65,14 @@ abstract class BaseState extends Phaser.State
         //this.game.physics.arcade.collide(G.enemyHitboxes, G.allyFire);
         //this.game.physics.arcade.collide(G.allyHitboxes, G.enemyFire);
         
-        //G.game.world.sort('y',Phaser.Group.SORT_ASCENDING);
+        G.game.world.sort('y',Phaser.Group.SORT_ASCENDING);
     }
 
     render() {
         G.render.dispatch();
 
         //ADD UNNIVERSAL CODE HERE
-        (this.game.debug as any).box2dWorld();
+        //(this.game.debug as any).box2dWorld();
         //this.game.debug.text(this.game.time.fps.toString(), 32, 32, 'rgb(255,255,255)');
         //END OF UNIVERSALE CODE
         

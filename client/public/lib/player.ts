@@ -24,10 +24,10 @@ class Player extends BaseActor {
 
     Create()
     {
-        let sprite = G.getSprite('testplayer', 250, 80);
+        let sprite = G.getSprite('testplayer', 250, 600);
         G.game.physics.box2d.enable(sprite, true);
         //p2b(sprite).collideWorldBounds = true;
-        b2d(sprite).setCircle(16,0,30);
+        b2d(sprite).setCircle(16,0,20);
         // b2d(sprite).clearShapes();
         // b2d(sprite).loadPolygon(null,[{shape: [0,0,20,0,20,20,0,10]}] as any)
         //b2d(sprite).offset = new Phaser.Point(0,-16);
@@ -35,6 +35,8 @@ class Player extends BaseActor {
         b2d(sprite).mass = 1;
         b2d(sprite).fixedRotation = true;
         b2d(sprite).linearDamping = 10;
+        b2d(sprite).setCollisionCategory(0b000010); //Physic
+        b2d(sprite).setCollisionMask(0b000011); //Physic and walls
 
         // (p2b(sprite).data as any).ccdSpeedThreshold = 0;
 		// (p2b(sprite).data as any).ccdIterations = 10;
@@ -44,10 +46,10 @@ class Player extends BaseActor {
 
 
         this.hitbox = new Phaser.Physics.Box2D.Body(G.game, null, sprite.x, sprite.y);
-        this.hitbox.setRectangle(10,80)
+        this.hitbox.setRectangle(10,50,0,-5)
         //this.hitbox.fixedRotation = true;
-        this.hitbox.setCollisionCategory(0x0010);
-        this.hitbox.setCollisionMask(0x1101);
+        this.hitbox.setCollisionCategory(0b000100); //Ally Hit
+        this.hitbox.setCollisionMask(0b100000); //Enemy fire only
         G.game.physics.box2d.weldJoint(sprite, this.hitbox);
 
         //G.game.physics.p2.createRevoluteConstraint(sprite, [0, 0], this.hitbox, [0, 0]);
@@ -68,23 +70,6 @@ class Player extends BaseActor {
         //END THIN BOX
 
 
-        this.ground = new Phaser.Physics.Box2D.Body(G.game, null, 200, 200);
-
-        this.ground.addEdge(0, 0, 100, 0);
-        this.ground.addEdge(100, 0, 100, -100);
-        this.ground.addEdge(100, -100, 300, -100);
-        this.ground.addEdge(300, -100, 300, 100);
-        this.ground.addEdge(300, 100, 400, 100);
-        this.ground.addEdge(400, 100, 400, 200);
-        this.ground.addEdge(400, 200, 100, 200);
-        this.ground.addEdge(100, 200, 100, 150);
-        this.ground.addEdge(100, 150, 0, 150);
-        this.ground.addEdge(0, 150, 0, 0);
-
-        this.ground.static = true;
-
-
-
         this.cursors = G.game.input.keyboard.createCursorKeys();
 
         sprite.animations.add('leftright',[2,3],5,true);
@@ -99,7 +84,6 @@ class Player extends BaseActor {
         this.isShooting = false;
 
     }
-    ground: Phaser.Physics.Box2D.Body;
     hitbox: Phaser.Physics.Box2D.Body;
 
     Update()

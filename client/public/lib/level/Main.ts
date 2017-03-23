@@ -19,7 +19,7 @@ class Main extends BaseState
         this.game.load.image('car', '../res/sprite/car90.png');
 
         
-        this.game.load.image('map1', '../res/map/testmap.png');
+        this.game.load.image('map1', '../res/map/citytest.png');
 
 
     }
@@ -31,10 +31,24 @@ class Main extends BaseState
         //this.game.physics.p2.contactMaterial.stiffness = Number.MAX_VALUE;
         //this.useTestMap();
 
-        this.game.add.image(0,0,"map1");
-        this.game.world.resize(4000,4000)
+        let background = this.game.add.image(0,0,"map1");
+        background.scale = new Phaser.Point(2,2);
+        this.game.world.resize(background.width, background.height);
 
-        
+
+
+        let ground = new Phaser.Physics.Box2D.Body(G.game, null, 0, 0);
+        let verts = [0,266,151,234,291,396,520,243,895,298,999,
+                    436,796,690,548,761,366,648,151,390,0];
+        verts = verts.map(v => v*2);
+        for (let i = 1; i < verts.length - 1; i++)
+        {
+            if (i%2) ground.addEdge(verts[i-1],verts[i],verts[i+1],verts[i]);
+            else     ground.addEdge(verts[i],verts[i-1],verts[i],verts[i+1]);
+        }
+        ground.static = true;
+        ground.setCollisionCategory(0b000001); //Walls
+        ground.setCollisionMask(0b101010); //Physic, Ally fire, Enemy fire
 
     }
 

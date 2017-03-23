@@ -31,8 +31,8 @@ class Bullet extends BaseActor {
         b2d(sprite).setRectangle(15,15,0,0);
         b2d(sprite).fixedRotation = true;
         b2d(sprite).restitution = 1;
-        b2d(sprite).setCollisionCategory(0x0010);
-        b2d(sprite).setCollisionMask(0x1101);
+        b2d(sprite).setCollisionCategory(0b001000); //Ally fire
+        b2d(sprite).setCollisionMask(0b010001); //Enemy hit and walls
 
         
         // (p2b(sprite).data as any).ccdSpeedThreshold = 0;
