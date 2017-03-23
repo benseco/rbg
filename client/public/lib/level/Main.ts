@@ -26,10 +26,6 @@ class Main extends BaseState
 
     Create()
     {
-        
-        //this.game.physics.p2.contactMaterial.restitution = 0;
-        //this.game.physics.p2.contactMaterial.stiffness = Number.MAX_VALUE;
-        //this.useTestMap();
 
         let background = this.game.add.image(0,0,"map1");
         background.scale = new Phaser.Point(2,2);
@@ -78,16 +74,6 @@ class Main extends BaseState
         G.layerCollision = this.map.createLayer('collision');
         this.map.setCollisionByExclusion([],true,'collision');
         this.layers.push(G.layerCollision);
-
-        
-
-        //Wall objects
-        //this.car = this.game.add.sprite(16,16,'car');
-        //this.car.anchor.setTo(0.5, 0.5);
-        //this.game.physics.enable(this.car);
-        //arcb(this.car).collideWorldBounds = true;
-        //arcb(this.car).immovable = true;
-        //arcb(this.car).moves = false;
 
         //Add overhead layers?
         let ol1 = this.map.createLayer('overhead');

@@ -17,11 +17,6 @@ class BasicEnemy extends BaseActor {
 
         b2d(sprite).setCollisionCategory(0b000010); //Physic
         b2d(sprite).setCollisionMask(0b000011); //Physic and walls
-        //p2b(sprite).offset = new Phaser.Point(0,-16);
-        //p2b(sprite).updateCollisionMask();
-
-        //p2b(sprite).setCollisionGroup(G.physicCollision);
-        //p2b(sprite).collides(G.physicCollision);
 
         sprite.animations.add('leftright',[2,3],5,true);
         sprite.animations.add('idlefront',[0]);

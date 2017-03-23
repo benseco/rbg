@@ -26,24 +26,15 @@ class Player extends BaseActor {
     {
         let sprite = G.getSprite('testplayer', 250, 600);
         G.game.physics.box2d.enable(sprite, true);
-        //p2b(sprite).collideWorldBounds = true;
         b2d(sprite).setCircle(16,0,20);
         // b2d(sprite).clearShapes();
         // b2d(sprite).loadPolygon(null,[{shape: [0,0,20,0,20,20,0,10]}] as any)
         //b2d(sprite).offset = new Phaser.Point(0,-16);
-        //p2b(sprite).updateCollisionMask();
         b2d(sprite).mass = 1;
         b2d(sprite).fixedRotation = true;
         b2d(sprite).linearDamping = 10;
         b2d(sprite).setCollisionCategory(0b000010); //Physic
         b2d(sprite).setCollisionMask(0b000011); //Physic and walls
-
-        // (p2b(sprite).data as any).ccdSpeedThreshold = 0;
-		// (p2b(sprite).data as any).ccdIterations = 10;
-
-        // p2b(sprite).setCollisionGroup(G.physicCollision);
-        // p2b(sprite).collides(G.physicCollision);
-
 
         this.hitbox = new Phaser.Physics.Box2D.Body(G.game, null, sprite.x, sprite.y);
         this.hitbox.setRectangle(10,50,0,-5)
@@ -51,24 +42,6 @@ class Player extends BaseActor {
         this.hitbox.setCollisionCategory(0b000100); //Ally Hit
         this.hitbox.setCollisionMask(0b100000); //Enemy fire only
         G.game.physics.box2d.weldJoint(sprite, this.hitbox);
-
-        //G.game.physics.p2.createRevoluteConstraint(sprite, [0, 0], this.hitbox, [0, 0]);
-
-        //THIN BOX
-        // let thinbox = G.getSprite();
-        // thinbox.width = 600;
-        // thinbox.height = 10;
-        // thinbox.x = 20;
-        // thinbox.y = 400;
-        
-        // G.game.physics.p2.enable(thinbox, true);
-        // p2b(thinbox).fixedRotation = true;
-        // p2b(thinbox).static = true;
-
-        // p2b(thinbox).setCollisionGroup(G.enemyHitboxes);
-        // p2b(thinbox).collides(G.allyFire);
-        //END THIN BOX
-
 
         this.cursors = G.game.input.keyboard.createCursorKeys();
 
@@ -159,75 +132,6 @@ class Player extends BaseActor {
             b2d(this.mainSprite).thrust(2000 * b2d(this.mainSprite).mass);
         }
     }
-
-    // tryMove()
-    // {
-    //     this.mainSprite.scale.setTo(2,2);
-
-    //     if (G.game.input.keyboard.isDown(Phaser.Keyboard.S) || G.game.input.keyboard.isDown(Phaser.Keyboard.W) ||
-    //          G.game.input.keyboard.isDown(Phaser.Keyboard.A) || G.game.input.keyboard.isDown(Phaser.Keyboard.D))
-    //     {
-    //         let direction: Phaser.Point = new Phaser.Point();
-    //         if (G.game.input.keyboard.isDown(Phaser.Keyboard.A))
-    //         {
-    //             direction.add(-1,0);
-
-    //             this.mainSprite.scale.setTo(-2,2);
-    //             this.mainSprite.animations.play('leftright');
-    //         }
-    //         else if (G.game.input.keyboard.isDown(Phaser.Keyboard.D))
-    //         {
-    //             direction.add(1,0);
-
-    //             this.mainSprite.animations.play('leftright');
-    //         }
-
-    //         if (G.game.input.keyboard.isDown(Phaser.Keyboard.W))
-    //         {
-    //             direction.add(0,-1);
-                
-    //             if (!G.game.input.keyboard.isDown(Phaser.Keyboard.D) && !G.game.input.keyboard.isDown(Phaser.Keyboard.A)) this.mainSprite.animations.play('backward');
-    //         }
-    //         else if (G.game.input.keyboard.isDown(Phaser.Keyboard.S))
-    //         {
-    //             direction.add(0,1);
-
-    //             if (!G.game.input.keyboard.isDown(Phaser.Keyboard.D) && !G.game.input.keyboard.isDown(Phaser.Keyboard.A)) this.mainSprite.animations.play('forward');
-    //         }
-
-    //         direction.normalize().multiply(this.speed, this.speed);
-    //         p2b(this.mainSprite).velocity.x += ((direction.x - p2b(this.mainSprite).velocity.x) / (this.speed * .001)) * G.game.time.physicsElapsed;
-    //         p2b(this.mainSprite).velocity.y += ((direction.y - p2b(this.mainSprite).velocity.y) / (this.speed * .001)) * G.game.time.physicsElapsed;
-
-
-    //     }
-    //     else
-    //     {
-    //         this.mainSprite.animations.play('idlefront');
-    //     }
-
-    //     //this.drag();
-
-    //     //arcb(this.mainSprite).velocity.multiply(.9,.9);
-    //     //arcb(this.mainSprite).acceleration.multiply(.5,.5);
-
-    //     /*
-    //     //TESTING WIND
-        
-    //     if (G.game.input.keyboard.isDown(Phaser.Keyboard.M)) this.wind = !this.wind;
-    //     if (this.wind)
-    //     {
-    //         this.applyForce(new Phaser.Point(0,-1500));
-    //     }
-
-    //     //TESTING INSTANTANEOUS FORCES
-    //     if (G.game.input.keyboard.isDown(Phaser.Keyboard.P))
-    //     {
-    //         console.log("PUSHED");
-    //         this.applyForce(new Phaser.Point(0,20000));
-    //     }
-    //     */
-    // }
 
     // wind: boolean = false;
 

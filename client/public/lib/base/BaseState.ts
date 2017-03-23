@@ -30,20 +30,6 @@ abstract class BaseState extends Phaser.State
     create() {
         this.game.physics.startSystem(Phaser.Physics.BOX2D);
 
-
-        // G.physicCollision = this.game.physics.p2.createCollisionGroup();
-        // G.enemyHitboxes = this.game.physics.p2.createCollisionGroup();
-        // G.enemyFire = this.game.physics.p2.createCollisionGroup();
-        // G.allyHitboxes = this.game.physics.p2.createCollisionGroup();
-        // G.allyFire = this.game.physics.p2.createCollisionGroup();
-
-        // this.game.physics.p2.updateBoundsCollisionGroup();
-        // G.enemyHitboxes.z = 0; 
-        // G.allyHitboxes.z = 1; 
-        // G.physicCollision.z = 2; 
-        // G.allyFire.z = 3; 
-        // G.enemyFire.z = 4;
-
         //ADD UNNIVERSAL CODE HERE
         this.game.stage.backgroundColor = "#dddddd";
 
@@ -59,20 +45,15 @@ abstract class BaseState extends Phaser.State
     }
 
     update() {
-        G.update.dispatch();
-
-        //this.game.physics.arcade.collide(G.physicCollision);
-        //this.game.physics.arcade.collide(G.enemyHitboxes, G.allyFire);
-        //this.game.physics.arcade.collide(G.allyHitboxes, G.enemyFire);
-        
+        G.update.dispatch();        
         G.game.world.sort('y',Phaser.Group.SORT_ASCENDING);
     }
 
     render() {
         G.render.dispatch();
 
-        //ADD UNNIVERSAL CODE HERE
-        //(this.game.debug as any).box2dWorld();
+        //ADD UNNIVERSAL CODE H
+        (this.game.debug as any).box2dWorld();
         //this.game.debug.text(this.game.time.fps.toString(), 32, 32, 'rgb(255,255,255)');
         //END OF UNIVERSALE CODE
         

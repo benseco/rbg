@@ -35,15 +35,6 @@ abstract class BaseActor {
         this.battleSprite = undefined;
     }
 
-    /*
-    drag()
-    {
-        let drag = (new Phaser.Point()).copyFrom(arcb(this.mainSprite).velocity).multiply(10,10);
-        arcb(this.mainSprite).velocity.x -= drag.x * G.game.time.physicsElapsed;
-        arcb(this.mainSprite).velocity.y -= drag.y * G.game.time.physicsElapsed;
-    }
-    */
-
     thrustDirectional(power: number, x: number, y: number)
     {
         let body = b2d(this.mainSprite);
