@@ -2,6 +2,7 @@ abstract class BaseActor {
 
     mainSprite: Phaser.Sprite;
     battleSprite: Phaser.Sprite;
+    hitPoints: number;
 
     constructor()
     {

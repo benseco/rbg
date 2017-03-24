@@ -2,11 +2,9 @@
 class Player extends BaseActor {
     cursors: Phaser.CursorKeys;
     isShooting: boolean;
-
     bullets: number;
-
+    hitbox: Phaser.Physics.Box2D.Body;
     weaponSystem: MainWeapon;
-
     speed: number = 400; // double what you want
 
     constructor()
@@ -57,7 +55,6 @@ class Player extends BaseActor {
         this.isShooting = false;
 
     }
-    hitbox: Phaser.Physics.Box2D.Body;
 
     Update()
     {
