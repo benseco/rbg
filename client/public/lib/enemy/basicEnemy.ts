@@ -1,10 +1,10 @@
-/// <reference path="../base/BaseActor.ts" />
-class BasicEnemy extends BaseActor {
+/// <reference path="../base/BaseInteracts.ts" />
+class BasicEnemy extends BaseInteracts {
     hitbox: Phaser.Physics.Box2D.Body;
 
     Preload()
     {
-        G.game.load.spritesheet('basicenemy', '../res/sprite/testplayer.png',16,32);
+        G.game.load.spritesheet('basicenemy', '../res/sprite/testplayer.png',12,26);
         this.hitPoints = 10;
     }
 
@@ -13,7 +13,7 @@ class BasicEnemy extends BaseActor {
         let sprite = G.getSprite('basicenemy', 300, 600);
         G.game.physics.box2d.enable(sprite, true);
         b2d(sprite).collideWorldBounds = true;
-        b2d(sprite).setCircle(16, 0, 20);
+        b2d(sprite).setCircle(12);
         b2d(sprite).mass = 15;
         b2d(sprite).static = true;
 
@@ -21,8 +21,8 @@ class BasicEnemy extends BaseActor {
         b2d(sprite).setCollisionMask(0b010011); //Physic and walls
 
         this.hitbox = new Phaser.Physics.Box2D.Body(G.game, null, sprite.x, sprite.y);
-        this.hitbox.setRectangle(10,50,0,-5);
-        //this.hitbox.fixedRotation = true;
+        this.hitbox.setRectangle(10,50,0,-26);
+        this.hitbox.mass = 15;
         this.hitbox.setCollisionCategory(0b010000); //Enemy hit
         this.hitbox.setCollisionMask(0b001000); //Enemy fire, enemy hit?, physic, and walls
         G.game.physics.box2d.weldJoint(sprite, this.hitbox);
@@ -35,7 +35,7 @@ class BasicEnemy extends BaseActor {
 
         this.setMainSprite(sprite);
 
-        
+        this.mainSprite.anchor.set(0.5,1);
         this.mainSprite.scale.setTo(2,2);
 
         encase(this.hitbox, this);
@@ -105,5 +105,9 @@ class BasicEnemy extends BaseActor {
     {
         
     }
+
+    OnFar() {}
+    OnInteract() {}
+    OnNear() {}
 
 }

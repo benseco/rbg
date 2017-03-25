@@ -17,6 +17,7 @@ class Main extends BaseState
         this.game.load.tilemap('testmap', '../res/map/testmap.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.image('tiles', '../res/map/testset.png');
         this.game.load.image('car', '../res/sprite/car90.png');
+        this.game.load.image('interact', '../res/ui/e.png');
 
         
         this.game.load.image('map1', '../res/map/citytest.png');

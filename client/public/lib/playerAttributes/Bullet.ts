@@ -25,6 +25,8 @@ class Bullet extends BaseActor {
     Create()
     {
         let sprite = G.getSprite('bullet', this.x, this.y);
+        this.setMainSprite(sprite);
+        this.mainSprite.scale.setTo(2,2);
         G.game.physics.box2d.enable(sprite);
         b2d(sprite).setRectangle(15,15,0,0);
         b2d(sprite).linearDamping = 2;
@@ -32,9 +34,8 @@ class Bullet extends BaseActor {
         b2d(sprite).restitution = .5;
         b2d(sprite).setCollisionCategory(0b001000); //Ally fire
         b2d(sprite).setCollisionMask(0b010001); //Enemy hit and walls
-        this.setMainSprite(sprite);
-        this.mainSprite.scale.setTo(2,2);
         b2d(this.mainSprite).bullet = true;
+        b2d(this.mainSprite).setCategoryContactCallback(0b010000, this.hpCalculation, this);
         this.thrustDirectional(200000, this.x - G.game.input.mousePointer.worldX, this.y - G.game.input.mousePointer.worldY);
     }
 
@@ -48,7 +49,6 @@ class Bullet extends BaseActor {
 
     Update()
     {
-        b2d(this.mainSprite).setCategoryContactCallback(0b010000, this.hpCalculation, this);
     }
     
     hpCalculation(body1:Phaser.Physics.Box2D.Body, body2:Phaser.Physics.Box2D.Body, fixture1:any, fixture2:any, contact:any, impulseInfo:any){

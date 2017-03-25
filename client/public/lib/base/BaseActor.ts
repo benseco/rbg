@@ -22,7 +22,7 @@ abstract class BaseActor {
 
     setMainSprite(sprite: Phaser.Sprite, collides = true) {
         this.mainSprite = sprite;
-        b2d(this.mainSprite).collideWorldBounds = true;
+        //b2d(this.mainSprite).collideWorldBounds = true;
     }
 
     destroy()

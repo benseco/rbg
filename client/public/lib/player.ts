@@ -6,6 +6,7 @@ class Player extends BaseActor {
     hitbox: Phaser.Physics.Box2D.Body;
     weaponSystem: MainWeapon;
     speed: number = 400; // double what you want
+    facingForward: boolean = true;
 
     constructor()
     {
@@ -16,7 +17,7 @@ class Player extends BaseActor {
 
     Preload()
     {
-        G.game.load.spritesheet('testplayer', '../res/sprite/testplayer.png',16,32);
+        G.game.load.spritesheet('testplayer', '../res/sprite/testplayer.png',12,26);
         G.game.load.image('bullet', '../res/sprite/bullet.png');
     }
 
@@ -24,7 +25,7 @@ class Player extends BaseActor {
     {
         let sprite = G.getSprite('testplayer', 250, 600);
         G.game.physics.box2d.enable(sprite, true);
-        b2d(sprite).setCircle(16,0,20);
+        b2d(sprite).setCircle(12);
         // b2d(sprite).clearShapes();
         // b2d(sprite).loadPolygon(null,[{shape: [0,0,20,0,20,20,0,10]}] as any)
         //b2d(sprite).offset = new Phaser.Point(0,-16);
@@ -35,7 +36,7 @@ class Player extends BaseActor {
         b2d(sprite).setCollisionMask(0b000011); //Physic and walls
 
         this.hitbox = new Phaser.Physics.Box2D.Body(G.game, null, sprite.x, sprite.y);
-        this.hitbox.setRectangle(10,50,0,-5)
+        this.hitbox.setRectangle(10,50,0,-26);
         //this.hitbox.fixedRotation = true;
         this.hitbox.setCollisionCategory(0b000100); //Ally Hit
         this.hitbox.setCollisionMask(0b100000); //Enemy fire only
@@ -54,6 +55,9 @@ class Player extends BaseActor {
 
         this.isShooting = false;
 
+        
+        sprite.anchor.setTo(0.5,1);
+
     }
 
     Update()
@@ -61,6 +65,13 @@ class Player extends BaseActor {
         this.tryMove();
 
         this.tryShoot();
+
+        // This is for checking the anchor point of an actor.
+        // console.log(  "XDiff-" + (this.mainSprite.x - G.game.input.mousePointer.worldX) 
+        //             + " :: "
+        //             + "YDiff-" + (this.mainSprite.y - G.game.input.mousePointer.worldY)
+        //             );
+
         
     }
     
@@ -108,12 +119,16 @@ class Player extends BaseActor {
 
             if (G.game.input.keyboard.isDown(Phaser.Keyboard.W))
             {
+                this.facingForward = false;
+
                 b2d(this.mainSprite).thrust(200000*G.game.time.physicsElapsed);
 
                 if (!G.game.input.keyboard.isDown(Phaser.Keyboard.D) && !G.game.input.keyboard.isDown(Phaser.Keyboard.A)) this.mainSprite.animations.play('backward');
             }
             else if (G.game.input.keyboard.isDown(Phaser.Keyboard.S))
             {
+                this.facingForward = true;
+
                 b2d(this.mainSprite).reverse(200000*G.game.time.physicsElapsed);
 
                 if (!G.game.input.keyboard.isDown(Phaser.Keyboard.D) && !G.game.input.keyboard.isDown(Phaser.Keyboard.A)) this.mainSprite.animations.play('forward');
@@ -121,7 +136,8 @@ class Player extends BaseActor {
         }
         else
         {
-            this.mainSprite.animations.play('idlefront');
+            if (this.facingForward) this.mainSprite.animations.play('idlefront');
+            else this.mainSprite.animations.play('idleback');
         }
 
         if (G.game.input.keyboard.isDown(Phaser.Keyboard.P))
