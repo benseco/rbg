@@ -11,7 +11,7 @@
             "taskName": "Compile Client",
             "suppressTaskName": true,
             "args": ["-w", "-p", "./client"],
-            "isWatching": true,
+            "isBackground": true,
             "problemMatcher": "$tsc-watch"
         },
         {

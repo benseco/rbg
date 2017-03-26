@@ -106,8 +106,4 @@ class BasicEnemy extends BaseInteracts {
         
     }
 
-    OnFar() {}
-    OnInteract() {}
-    OnNear() {}
-
 }

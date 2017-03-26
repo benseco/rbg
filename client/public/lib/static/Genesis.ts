@@ -1,7 +1,7 @@
 class Genesis
 {
 
-    constructor() { throw new Error("CANNOT INSTANTIATE STATIC CLASS"); }
+    constructor() { throw new Error("CANNOT INSTANTIATE STATIC CLASS GENESIS"); }
 
     static game: Phaser.Game;
     static init: Phaser.Signal;

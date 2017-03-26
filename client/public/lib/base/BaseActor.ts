@@ -6,7 +6,6 @@ abstract class BaseActor {
 
     constructor()
     {
-
         G.preload.add(this.Preload, this);
         G.create.add(this.Create, this);
         G.update.add(this.Update, this);
