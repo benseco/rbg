@@ -106,4 +106,9 @@ class BasicEnemy extends BaseInteracts {
         
     }
 
+    OnInteract()
+    {
+        this.mainSprite.animations.play('forward');
+    }
+
 }
