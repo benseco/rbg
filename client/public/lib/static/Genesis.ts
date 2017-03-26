@@ -13,8 +13,6 @@ class Genesis
 
     static player: Player;
 
-    static drag: Phaser.Point;
-
     static begin(game: Phaser.Game) 
     {
         Genesis.game = game;
@@ -63,15 +61,10 @@ class Genesis
         }
     }
 
-    static physicCollision: Phaser.Physics.P2.CollisionGroup;
-    static enemyHitboxes: Phaser.Physics.P2.CollisionGroup;
-    static enemyFire: Phaser.Physics.P2.CollisionGroup;
-    static allyHitboxes: Phaser.Physics.P2.CollisionGroup;
-    static allyFire: Phaser.Physics.P2.CollisionGroup;
-
     //TEMPORARY
     static layerCollision: Phaser.TilemapLayer;
 
+    static nearestInteractable: BaseInteracts;
 
 }
 

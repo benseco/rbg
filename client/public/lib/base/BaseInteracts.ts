@@ -1,5 +1,6 @@
 abstract class BaseInteracts extends BaseActor {
 
+    private distance: number;
     private isNear: boolean;
     private notifierSprite: Phaser.Sprite;
 
@@ -12,7 +13,7 @@ abstract class BaseInteracts extends BaseActor {
 
     OnInteract()
     {
-
+        console.log("You did it!");
     }
 
     OnNear()
@@ -38,19 +39,30 @@ abstract class BaseInteracts extends BaseActor {
         if (this.mainSprite)
         {
             // Get the distance between this and the player
-            let distance = this.mainSprite.position.distance(G.player.mainSprite.position);
-            if (distance < 30) // Eventually this will need to be a customizable distance
+            this.distance = this.mainSprite.position.distance(G.player.mainSprite.position);
+            if (this.distance < 30) // Eventually this will need to be a customizable distance
             {
                 if (!this.isNear) // Were we already near enough last update? 
                 {
                     this.isNear = true;
                     this.OnNear();
                 }
+
+                if (!G.nearestInteractable ||
+                    G.nearestInteractable.distance > this.distance) 
+                {
+                    G.nearestInteractable = this;
+                }
             }
             else if (this.isNear) // If we aren't near anymore, yet we were last update...
             {
                 this.isNear = false;
                 this.OnFar();
+
+                if (G.nearestInteractable == this) 
+                {
+                    G.nearestInteractable = undefined;
+                }
             }
         }
     }

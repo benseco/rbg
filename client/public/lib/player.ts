@@ -144,6 +144,12 @@ class Player extends BaseActor {
         {
             b2d(this.mainSprite).thrust(2000 * b2d(this.mainSprite).mass);
         }
+
+        if (G.game.input.keyboard.isDown(Phaser.Keyboard.E))
+        {
+            // Interaction
+            if (G.nearestInteractable) G.nearestInteractable.OnInteract();
+        }
     }
 
     // wind: boolean = false;
