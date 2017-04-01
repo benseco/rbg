@@ -63,4 +63,9 @@ abstract class BaseState extends Phaser.State
         G.shutdown.dispatch();
     }
 
+    pauseUpdate()
+    {
+        G.pauseUpdate.dispatch();
+    }
+
 }

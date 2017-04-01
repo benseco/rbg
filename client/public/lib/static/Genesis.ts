@@ -7,6 +7,7 @@ class Genesis
     static init: Phaser.Signal;
     static preload: Phaser.Signal;
     static create: Phaser.Signal;
+    static pauseUpdate: Phaser.Signal;
     static update: Phaser.Signal;
     static render: Phaser.Signal;
     static shutdown: Phaser.Signal;
@@ -19,6 +20,7 @@ class Genesis
         Genesis.init = new Phaser.Signal();
         Genesis.preload = new Phaser.Signal();
         Genesis.create = new Phaser.Signal();
+        Genesis.pauseUpdate = new Phaser.Signal();
         Genesis.update = new Phaser.Signal();
         Genesis.render = new Phaser.Signal();
         Genesis.shutdown = new Phaser.Signal();
