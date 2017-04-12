@@ -44,9 +44,9 @@ class BasicEnemy extends BaseInteracts {
 
     Update()
     {
-        if (this.hitPoints < 1){
-            this.destroy();
-        }
+        // if (this.hitPoints < 1){
+        //     this.destroy();
+        // }
         //this.mainSprite.scale.setTo(2,2);
         //arcb(this.mainSprite).velocity.set(0,0);
 
@@ -110,6 +110,22 @@ class BasicEnemy extends BaseInteracts {
     {
         this.mainSprite.animations.play('forward');
         new Dialogue();
+    }
+
+    damage(amount: number)
+    {
+        this.hitPoints -= amount;
+        if (this.hitPoints < 0)
+        {
+            this.kill()
+        }
+    }
+
+    kill()
+    {
+        this.hitbox.kill()
+        b2d(this.mainSprite).kill()
+        this.mainSprite.kill();
     }
 
 }
