@@ -3,10 +3,8 @@ class Bullet extends BaseActor {
     
     x: number;
     y: number;
-    x0: number;
-    x1: number;
-    y0: number;
-    y1: number;
+
+    killBody: boolean;
 
     constructor(x: number, y: number) {
         super();
@@ -50,10 +48,17 @@ class Bullet extends BaseActor {
 
     Update()
     {
+        if (this.killBody)
+        {
+            b2d(this.mainSprite).kill();
+            this.killBody = false;
+        }
     }
     
-    onEnemyHitboxCollide(body1:Phaser.Physics.Box2D.Body, body2:Phaser.Physics.Box2D.Body, fixture1:any, fixture2:any, contact:any, impulseInfo:any){
-        //IN PROGRESS -- haven't thought about enemy death yet
+    onEnemyHitboxCollide(body1:Phaser.Physics.Box2D.Body, body2:Phaser.Physics.Box2D.Body, fixture1:any, fixture2:any, contact:any, impulseInfo:any)
+    { 
+        if (!contact) return;
+
         let enemy = (shell(body2) as BasicEnemy);
         if (enemy.mainSprite)
         {
@@ -82,8 +87,9 @@ class Bullet extends BaseActor {
 
     kill()
     {
-        b2d(this.mainSprite).kill();
+        //b2d(this.mainSprite).kill(); //.destroy();
         this.mainSprite.kill();
+        this.killBody = true;
     }
 
 }
