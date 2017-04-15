@@ -6,9 +6,6 @@ class Dialogue
     text: Phaser.Text;
     style: object;
 
-    // Temporary isAdvancing flag
-    isAdvancing: boolean = true;
-
     constructor(key?: string) 
     {
 
@@ -28,26 +25,18 @@ class Dialogue
 
     PauseUpdate()
     {
-        if (G.game.input.keyboard.isDown(Phaser.Keyboard.E))
+        if (Input.pressed(Action.Interact))
         {
-            // Temporary isAdvancing flag
-            if (!this.isAdvancing)
+            this.times++;
+
+            if (this.times > 5)
             {
-                this.times++;
-
-                if (this.times > 5)
-                {
-                    this.end();
-                }
-                
-                this.text.text = "(" + this.times + "/5) " + "phaser with a sprinkle of pixi dust";
-
-                // Temporary isAdvancing flag
-                this.isAdvancing = true;
-
+                this.end();
             }
+            
+            this.text.text = "(" + this.times + "/5) " + "phaser with a sprinkle of pixi dust";
+
         }
-        else this.isAdvancing = false; // Temporary isAdvancing flag
     }
 
     private end()

@@ -1,8 +1,6 @@
 /// <reference path="./base/BaseActor.ts" />
 class Player extends BaseActor {
     cursors: Phaser.CursorKeys;
-    isShooting: boolean;
-    bullets: number;
     hitbox: Phaser.Physics.Box2D.Body;
     weaponSystem: MainWeapon;
     speed: number = 400; // double what you want
@@ -11,8 +9,7 @@ class Player extends BaseActor {
     constructor()
     {
         super();
-        //this.weaponSystem = new MainWeapon();
-        this.bullets = 0;
+        this.weaponSystem = new MainWeapon();
     }
 
     Preload()
@@ -52,9 +49,6 @@ class Player extends BaseActor {
 
         this.setMainSprite(sprite);
         G.game.camera.follow(this.mainSprite);
-
-        this.isShooting = false;
-
         
         sprite.anchor.setTo(0.5,1);
 
@@ -64,7 +58,7 @@ class Player extends BaseActor {
     {
         this.tryMove();
 
-        this.tryShoot();
+        this.weaponSystem.tryShoot();
 
         // This is for checking the anchor point of an actor.
         // console.log(  "XDiff-" + (this.mainSprite.x - G.game.input.mousePointer.worldX) 
@@ -74,20 +68,14 @@ class Player extends BaseActor {
 
         
     }
-    
-    frame: number = 0;
+
     Render()
     {
         //G.game.debug.text("Wind: " + this.wind, 32, 64, 'rgb(255,255,255)');
         //G.game.debug.text("Vx: " + (p2b(this.mainSprite).velocity.x * p2b(this.mainSprite).velocity.x > 1 ? p2b(this.mainSprite).velocity.x : 0), 32, 140, 'rgb(255,255,255)');
         //G.game.debug.text("Vy: " + (p2b(this.mainSprite).velocity.y * p2b(this.mainSprite).velocity.y > 1 ? p2b(this.mainSprite).velocity.y : 0), 32, 160, 'rgb(255,255,255)');
 
-
         //G.game.debug.spriteBounds(this.hitbox);
-
-        if (this.frame % 60 == 0)
-            G.game.debug.text("Bullets: " + this.bullets, 32, 64, 'rgb(255,255,255)');
-        this.frame += 1;
 
     }
     
@@ -99,53 +87,62 @@ class Player extends BaseActor {
     tryMove()
     {
         this.mainSprite.scale.setTo(2,2);
+        let moving = false;
+        let leftright = false; // is this necessary?
         
-        if (G.game.input.keyboard.isDown(Phaser.Keyboard.S) || G.game.input.keyboard.isDown(Phaser.Keyboard.W) ||
-             G.game.input.keyboard.isDown(Phaser.Keyboard.A) || G.game.input.keyboard.isDown(Phaser.Keyboard.D))
+        if (Input.isDown(Action.Left))
         {
-            if (G.game.input.keyboard.isDown(Phaser.Keyboard.A))
-            {
-                this.thrustDirectional(200000*G.game.time.physicsElapsed,1,0);
+            this.thrustDirectional(200000*G.game.time.physicsElapsed,1,0);
 
-                this.mainSprite.scale.setTo(-2,2);
-                this.mainSprite.animations.play('leftright');
-            }
-            else if (G.game.input.keyboard.isDown(Phaser.Keyboard.D))
-            {
-                this.thrustDirectional(200000*G.game.time.physicsElapsed,-1,0);
+            this.mainSprite.scale.setTo(-2,2);
+            this.mainSprite.animations.play('leftright');
 
-                this.mainSprite.animations.play('leftright');
-            }
-
-            if (G.game.input.keyboard.isDown(Phaser.Keyboard.W))
-            {
-                this.facingForward = false;
-
-                b2d(this.mainSprite).thrust(200000*G.game.time.physicsElapsed);
-
-                if (!G.game.input.keyboard.isDown(Phaser.Keyboard.D) && !G.game.input.keyboard.isDown(Phaser.Keyboard.A)) this.mainSprite.animations.play('backward');
-            }
-            else if (G.game.input.keyboard.isDown(Phaser.Keyboard.S))
-            {
-                this.facingForward = true;
-
-                b2d(this.mainSprite).reverse(200000*G.game.time.physicsElapsed);
-
-                if (!G.game.input.keyboard.isDown(Phaser.Keyboard.D) && !G.game.input.keyboard.isDown(Phaser.Keyboard.A)) this.mainSprite.animations.play('forward');
-            }
+            moving = true;
+            leftright = true;
         }
-        else
+        else if (Input.isDown(Action.Right))
+        {
+            this.thrustDirectional(200000*G.game.time.physicsElapsed,-1,0);
+
+            this.mainSprite.animations.play('leftright');
+
+            moving = true;
+            leftright = true;
+        }
+
+        if (Input.isDown(Action.Up))
+        {
+            this.facingForward = false;
+
+            b2d(this.mainSprite).thrust(200000*G.game.time.physicsElapsed);
+
+            if (!leftright) this.mainSprite.animations.play('backward');
+            
+            moving = true;
+        }
+        else if (Input.isDown(Action.Down))
+        {
+            this.facingForward = true;
+
+            b2d(this.mainSprite).reverse(200000*G.game.time.physicsElapsed);
+
+            if (!leftright) this.mainSprite.animations.play('forward');
+            
+            moving = true;
+        }
+
+        if (!moving)
         {
             if (this.facingForward) this.mainSprite.animations.play('idlefront');
             else this.mainSprite.animations.play('idleback');
         }
 
-        if (G.game.input.keyboard.isDown(Phaser.Keyboard.P))
-        {
-            b2d(this.mainSprite).thrust(2000 * b2d(this.mainSprite).mass);
-        }
+        // if (G.game.input.keyboard.isDown(Phaser.Keyboard.P))
+        // {
+        //     b2d(this.mainSprite).thrust(2000 * b2d(this.mainSprite).mass);
+        // }
 
-        if (G.game.input.keyboard.isDown(Phaser.Keyboard.E))
+        if (Input.pressed(Action.Interact))
         {
             // Interaction
             if (G.nearestInteractable) G.nearestInteractable.OnInteract();
@@ -153,23 +150,5 @@ class Player extends BaseActor {
     }
 
     // wind: boolean = false;
-
-    tryShoot()
-    {
-        if(G.game.input.activePointer.leftButton.isDown)
-        {
-            if(!this.isShooting)
-            {
-                //for (let i=0; i<50; i++)
-                new Bullet(this.mainSprite.x, this.mainSprite.y);
-                this.isShooting = true;
-                this.bullets += 1;
-            }
-        }
-        else if (this.isShooting)
-        {
-            this.isShooting = false;
-        }
-    }
 
 }

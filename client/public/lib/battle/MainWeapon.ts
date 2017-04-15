@@ -1,9 +1,14 @@
+/// <reference path="../base/BaseActor.ts" />
 class MainWeapon extends BaseActor {
 
     hand: Phaser.Sprite;
     dial: Phaser.Sprite;
     timer: Phaser.Timer;
     looptime: number = 2000;
+    isShooting: boolean = false;
+
+    frame: number;
+    bullets: number;
 
     Preload()
     {
@@ -35,11 +40,24 @@ class MainWeapon extends BaseActor {
     
     Render()
     {
-        
+        if (this.frame % 60 == 0)
+            G.game.debug.text("Bullets: " + this.bullets, 32, 64, 'rgb(255,255,255)');
+        this.frame += 1;
     }
     
     Shutdown()
     {
         
+    }
+
+    tryShoot()
+    {
+        if(Input.pressed(Action.Shoot))
+        {
+            //for (let i=0; i<50; i++)
+            new Bullet(G.player.mainSprite.x, G.player.mainSprite.y);
+            this.isShooting = true;
+            this.bullets += 1;
+        }
     }
 }
