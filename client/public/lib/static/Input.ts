@@ -47,7 +47,7 @@ class Input
         let key = ActionMap[a];
         if (key == undefined) return false;
         
-        let isDown = Input.getKeyStatus(ActionMap[a]);
+        let isDown = Input.getKeyStatus(key);
         Input.wasDown[a] = isDown;
 
         return isDown;
