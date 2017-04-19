@@ -6,6 +6,9 @@ class Main extends BaseState
     map: Phaser.Tilemap;
     layers: Phaser.TilemapLayer[] = [];
 
+    background: Phaser.Image;
+    boundary: Phaser.Physics.Box2D.Body;
+
     constructor()
     {
         super();
@@ -21,6 +24,7 @@ class Main extends BaseState
 
         
         this.game.load.image('map1', '../res/map/citytest.png');
+        this.game.load.image('map2', '../res/map/roomtest.png');
 
 
     }
@@ -28,29 +32,46 @@ class Main extends BaseState
     Create()
     {
 
-        let background = this.game.add.image(0,0,"map1");
-        background.scale = new Phaser.Point(2,2);
-        this.game.world.resize(background.width, background.height);
+        this.background = this.game.add.image(0,0,"map1");
+        this.background.scale = new Phaser.Point(2,2);
+        this.game.world.resize(this.background.width, this.background.height);
 
 
 
-        let ground = new Phaser.Physics.Box2D.Body(G.game, null, 0, 0);
+        this.boundary = new Phaser.Physics.Box2D.Body(G.game, null, 0, 0);
         let verts = [0,266,151,234,291,396,520,243,895,298,999,
                     436,796,690,548,761,366,648,151,390,0];
         verts = verts.map(v => v*2);
         for (let i = 1; i < verts.length - 1; i++)
         {
-            if (i%2) ground.addEdge(verts[i-1],verts[i],verts[i+1],verts[i]);
-            else     ground.addEdge(verts[i],verts[i-1],verts[i],verts[i+1]);
+            if (i%2) this.boundary.addEdge(verts[i-1],verts[i],verts[i+1],verts[i]);
+            else     this.boundary.addEdge(verts[i],verts[i-1],verts[i],verts[i+1]);
         }
-        ground.static = true;
-        ground.setCollisionCategory(0b000001); //Walls
-        ground.setCollisionMask(0b101010); //Physic, Ally fire, Enemy fire
+        this.boundary.static = true;
+        this.boundary.setCollisionCategory(0b000001); //Walls
+        this.boundary.setCollisionMask(0b101010); //Physic, Ally fire, Enemy fire
 
     }
 
     Update()
     { 
+        if (G.game.input.keyboard.isDown(Phaser.Keyboard.P))
+        {
+            this.background.loadTexture("map2");
+
+            this.boundary.clearFixtures();
+            let verts = [0,266,151,234,291,396,520,243,895,298,999,
+                        436,796,690,548,761,366,648,151,390,0];
+            verts = verts.map(v => v*2);
+            for (let i = 1; i < verts.length - 1; i++)
+            {
+                if (i%2) this.boundary.addEdge(verts[i],verts[i-1],verts[i],verts[i+1]);
+                else     this.boundary.addEdge(verts[i-1],verts[i],verts[i+1],verts[i]);
+            }
+            this.boundary.static = true;
+            this.boundary.setCollisionCategory(0b000001); //Walls
+            this.boundary.setCollisionMask(0b101010); //Physic, Ally fire, Enemy fire
+        }
 
     }
     
