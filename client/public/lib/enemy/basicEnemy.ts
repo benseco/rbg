@@ -5,7 +5,7 @@ class BasicEnemy extends BaseInteracts {
     Preload()
     {
         G.game.load.spritesheet('basicenemy', '../res/sprite/testplayer.png',12,26);
-        this.hitPoints = 10;
+        this.hitPoints = 50;
     }
 
     Create()

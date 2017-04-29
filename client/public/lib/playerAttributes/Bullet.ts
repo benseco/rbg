@@ -6,6 +6,8 @@ class Bullet extends BaseActor {
 
     killBody: boolean;
 
+    damage: number = 1;
+
     constructor(x: number, y: number) {
         super();
         this.x = x;
@@ -62,7 +64,7 @@ class Bullet extends BaseActor {
         let enemy = (shell(body2) as BasicEnemy);
         if (enemy.mainSprite)
         {
-            enemy.damage(1);
+            enemy.damage(this.damage);
         }
        
         console.log((shell(body2) as BasicEnemy).hitPoints);
