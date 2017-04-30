@@ -98,7 +98,8 @@ class BasicEnemy extends BaseInteracts {
     
     Render()
     {
-        
+        // if (this.floatingDamage && this.floatingDamage.alive)
+        // G.game.debug.spriteBounds(this.floatingDamage);
     }
     
     Shutdown()
@@ -112,10 +113,18 @@ class BasicEnemy extends BaseInteracts {
         new Dialogue();
     }
 
+    floatingDamage: Phaser.Text;
+
     damage(amount: number)
     {
+        this.floatingDamage = G.game.add.text(0,-this.mainSprite.height / this.mainSprite.scale.y,""+amount,{ font: "8px Arial", fill: "#ffffff" });
+        this.mainSprite.addChild(this.floatingDamage);
+        let tween = G.game.add.tween(this.floatingDamage).to({alpha: 0, y: this.floatingDamage.y - 20},250,"Linear",true);
+        tween.onComplete.add(this.floatingDamage.destroy,this.floatingDamage);
+        tween.onComplete.add(function(){this.floatingDamage = null;});
+
         this.hitPoints -= amount;
-        if (this.hitPoints < 0)
+        if (this.hitPoints <= 0)
         {
             this.kill()
         }

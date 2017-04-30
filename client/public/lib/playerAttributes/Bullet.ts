@@ -52,7 +52,7 @@ class Bullet extends BaseActor {
     {
         if (this.killBody)
         {
-            b2d(this.mainSprite).kill();
+            b2d(this.mainSprite).destroy();
             this.killBody = false;
         }
     }

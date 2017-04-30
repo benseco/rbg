@@ -8,7 +8,9 @@ enum Action
     Up,
     Left,
     Down,
-    Right
+    Right,
+
+    Debug
 
 }
 
@@ -20,6 +22,8 @@ ActionMap[Action.Up] = Phaser.Keyboard.W;
 ActionMap[Action.Left] = Phaser.Keyboard.A;
 ActionMap[Action.Down] = Phaser.Keyboard.S;
 ActionMap[Action.Right] = Phaser.Keyboard.D;
+
+ActionMap[Action.Debug] = Phaser.Keyboard.TILDE;
 
 
 /*

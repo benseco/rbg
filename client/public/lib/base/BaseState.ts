@@ -47,13 +47,17 @@ abstract class BaseState extends Phaser.State
     update() {
         G.update.dispatch();        
         G.game.world.sort('y',Phaser.Group.SORT_ASCENDING);
+
+        if (Input.pressed(Action.Debug)) this.debugB2D = !this.debugB2D;
     }
+
+    debugB2D: boolean = false;
 
     render() {
         G.render.dispatch();
 
         //ADD UNNIVERSAL CODE H
-        (this.game.debug as any).box2dWorld();
+        if (this.debugB2D) (this.game.debug as any).box2dWorld();
         //this.game.debug.text(this.game.time.fps.toString(), 32, 32, 'rgb(255,255,255)');
         //END OF UNIVERSALE CODE
         
