@@ -53,12 +53,12 @@ class MainWeapon extends BaseActor {
     
     Render()
     {
-        if (this.frame % 60 == 0)
-            G.game.debug.text("Bullets: " + this.bullets, 32, 64, 'rgb(255,255,255)');
-        this.frame += 1;
+        // if (this.frame % 60 == 0)
+        //     G.game.debug.text("Bullets: " + this.bullets, 32, 64, 'rgb(255,255,255)');
+        // this.frame += 1;
 
         
-        G.game.debug.text("" + this.timer.duration / 100, 32, 600, 'rgb(255,255,255)');
+        // G.game.debug.text("" + this.timer.duration / 100, 32, 600, 'rgb(255,255,255)');
     }
     
     Shutdown()
