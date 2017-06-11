@@ -14,13 +14,13 @@ class Player extends BaseActor {
 
     Preload()
     {
-        G.game.load.spritesheet('testplayer', '../res/sprite/testplayer.png',12,26);
+        G.game.load.spritesheet('maintest', '../res/sprite/maintest.png',32,55);
         G.game.load.image('bullet', '../res/sprite/bullet.png');
     }
 
     Create()
     {
-        let sprite = G.getSprite('testplayer', 250, 600);
+        let sprite = G.getSprite('maintest', 250, 600);
         G.game.physics.box2d.enable(sprite, true);
         b2d(sprite).setCircle(12);
         // b2d(sprite).clearShapes();
@@ -41,11 +41,12 @@ class Player extends BaseActor {
 
         this.cursors = G.game.input.keyboard.createCursorKeys();
 
-        sprite.animations.add('leftright',[2,3],5,true);
+        
+        sprite.animations.add('leftright',[0,1,2,3,4,5,6,7,8,9,10,11,12],30,true);
         sprite.animations.add('idlefront',[0]);
-        sprite.animations.add('idleback',[1]);
-        sprite.animations.add('forward',[4,5],5,true);
-        sprite.animations.add('backward',[6,7],5,true);
+        sprite.animations.add('idleback',[0]);
+        sprite.animations.add('forward',[0,1,2,3,4,5,6,7,8,9,10,11,12],30,true);
+        sprite.animations.add('backward',[0,1,2,3,4,5,6,7,8,9,10,11,12],30,true);
 
         this.setMainSprite(sprite);
         G.game.camera.follow(this.mainSprite);
@@ -94,7 +95,6 @@ class Player extends BaseActor {
         {
             this.thrustDirectional(200000*G.game.time.physicsElapsed,1,0);
 
-            this.mainSprite.scale.setTo(-2,2);
             this.mainSprite.animations.play('leftright');
 
             moving = true;
@@ -104,6 +104,7 @@ class Player extends BaseActor {
         {
             this.thrustDirectional(200000*G.game.time.physicsElapsed,-1,0);
 
+            this.mainSprite.scale.setTo(-2,2);
             this.mainSprite.animations.play('leftright');
 
             moving = true;
