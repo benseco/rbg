@@ -4,7 +4,8 @@ class BasicEnemy extends BaseInteracts {
 
     Preload()
     {
-        G.game.load.spritesheet('basicenemy', '../res/sprite/testplayer.png',12,26);
+        // G.game.load.spritesheet('basicenemy', '../res/sprite/testplayer.png',12,26);
+        G.game.load.spritesheet('basicenemy', '../res/sprite/flower.png',18,33,12);        
         this.hitPoints = 50;
     }
 
@@ -27,11 +28,16 @@ class BasicEnemy extends BaseInteracts {
         this.hitbox.setCollisionMask(0b001000); //Enemy fire, enemy hit?, physic, and walls
         G.game.physics.box2d.weldJoint(sprite, this.hitbox);
 
-        sprite.animations.add('leftright',[2,3],5,true);
-        sprite.animations.add('idlefront',[0]);
-        sprite.animations.add('idleback',[1]);
-        sprite.animations.add('forward',[4,5],5,true);
-        sprite.animations.add('backward',[6,7],5,true);
+        // sprite.animations.add('leftright',[2,3],5,true);
+        // sprite.animations.add('idlefront',[0]);
+        // sprite.animations.add('idleback',[1]);
+        // sprite.animations.add('forward',[4,5],5,true);
+        // sprite.animations.add('backward',[6,7],5,true);
+        sprite.animations.add('leftright',[4,5,6,7,8,9,10,11,12],10,true);
+        sprite.animations.add('idlefront',[0,1,2,3,4],7,true);
+        sprite.animations.add('idleback',[0,1,2,3,4],7,true);
+        sprite.animations.add('forward',[4,5,6,7,8,9,10,11,12],10,true);
+        sprite.animations.add('backward',[4,5,6,7,8,9,10,11,12],10,true);
 
         this.setMainSprite(sprite);
 
@@ -44,6 +50,7 @@ class BasicEnemy extends BaseInteracts {
 
     Update()
     {
+        this.mainSprite.animations.play('idlefront');
         // if (this.hitPoints < 1){
         //     this.destroy();
         // }

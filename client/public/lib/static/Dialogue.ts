@@ -4,7 +4,7 @@ class Dialogue
     times: number = 0;
     //sprite: Phaser.Sprite;
     text: Phaser.Text;
-    style: object;
+    style: any;
 
     constructor(key?: string) 
     {
